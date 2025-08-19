@@ -32,21 +32,144 @@ public class OnboardingSDK: ObservableObject {
     
     // MARK: - JSON Loading (Database Simulation)
     private func loadFlowFromJSON(flowID: String) -> OnboardingFlow? {
-        // Try to find JSON file for this flow
-        guard let url = Bundle.module.url(forResource: flowID, withExtension: "json", subdirectory: "resources") else {
-            print("OnboardingSDK: No JSON file found for flowID: \(flowID)")
-            return nil
+        // Try multiple bundle loading approaches for Swift Package Manager
+        let bundle = Bundle.module
+        
+        // Try different resource paths
+        let possiblePaths = [
+            bundle.url(forResource: flowID, withExtension: "json", subdirectory: "resources"),
+            bundle.url(forResource: flowID, withExtension: "json"),
+            bundle.url(forResource: "resources/\(flowID)", withExtension: "json")
+        ]
+        
+        guard let url = possiblePaths.compactMap({ $0 }).first else {
+            print("OnboardingSDK: ❌ No JSON file found for flowID: \(flowID)")
+            print("OnboardingSDK: Bundle path: \(bundle.bundlePath)")
+            print("OnboardingSDK: Bundle resources: \(bundle.urls(forResourcesWithExtension: "json", subdirectory: nil) ?? [])")
+            
+            // Fallback: Return a basic flow structure to avoid crashes
+            return createFallbackFlow(flowID: flowID)
         }
         
         do {
             let data = try Data(contentsOf: url)
             let jsonFlow = try JSONDecoder().decode(OnboardingFlow.self, from: data)
-            print("OnboardingSDK: ✅ Loaded flow '\(flowID)' from JSON file (simulating database)")
+            print("OnboardingSDK: ✅ Loaded flow '\(flowID)' from JSON file at: \(url.path)")
             return jsonFlow
         } catch {
-            print("OnboardingSDK: ❌ Failed to load JSON for flowID: \(flowID), error: \(error)")
-            return nil
+            print("OnboardingSDK: ❌ Failed to decode JSON for flowID: \(flowID), error: \(error)")
+            return createFallbackFlow(flowID: flowID)
         }
+    }
+    
+    // MARK: - Fallback Flow
+    private func createFallbackFlow(flowID: String) -> OnboardingFlow {
+        print("OnboardingSDK: 🔄 Creating fallback flow for: \(flowID)")
+        
+        // Create specific flow based on flowID
+        if flowID == "bubulab_onboarding_v1" {
+            return createBubulabFallbackFlow()
+        }
+        
+        // Generic fallback
+        return OnboardingFlow(
+            flowID: flowID,
+            appID: appID ?? "fallback_app",
+            version: "1.0-fallback",
+            pages: [
+                OnboardingPage(
+                    id: "fallback_welcome",
+                    type: .textImage,
+                    title: "Welcome! 👋",
+                    subtitle: "We're setting up your experience..."
+                ),
+                OnboardingPage(
+                    id: "fallback_complete",
+                    type: .textImage,
+                    title: "All Set! ✅",
+                    subtitle: "You're ready to start using the app"
+                )
+            ]
+        )
+    }
+    
+    private func createBubulabFallbackFlow() -> OnboardingFlow {
+        return OnboardingFlow(
+            flowID: "bubulab_onboarding_v1",
+            appID: appID ?? "bubulab_app",
+            version: "1.0-fallback",
+            pages: [
+                OnboardingPage(
+                    id: "welcome",
+                    type: .textImage,
+                    title: "Welcome to Bubulab! 🧸",
+                    subtitle: "Your ultimate Labubu collection companion"
+                ),
+                OnboardingPage(
+                    id: "collection_experience",
+                    type: .selector,
+                    title: "How experienced are you with Labubu collecting?",
+                    key: "experience_level",
+                    options: [
+                        "Just starting out 🌱",
+                        "Collecting for a while 📚",
+                        "Experienced collector 🏆",
+                        "Expert/Trader 💎"
+                    ]
+                ),
+                OnboardingPage(
+                    id: "collection_goal",
+                    type: .selector,
+                    title: "What's your main collecting goal?",
+                    key: "collection_goal",
+                    options: [
+                        "Complete specific series",
+                        "Collect rare pieces",
+                        "Track collection value",
+                        "Share with community",
+                        "Investment purposes"
+                    ]
+                ),
+                OnboardingPage(
+                    id: "budget_range",
+                    type: .slider,
+                    title: "What's your monthly collecting budget?",
+                    subtitle: "This helps us show relevant items",
+                    key: "monthly_budget",
+                    min: 0,
+                    max: 500,
+                    step: 25
+                ),
+                OnboardingPage(
+                    id: "notifications",
+                    type: .selector,
+                    title: "How would you like to stay updated?",
+                    key: "notification_preferences",
+                    options: [
+                        "New releases & restocks",
+                        "Price alerts only",
+                        "Community updates",
+                        "All notifications",
+                        "No notifications"
+                    ]
+                ),
+                OnboardingPage(
+                    id: "family_name",
+                    type: .input,
+                    title: "What should we call your collection family?",
+                    subtitle: "Give your Labubu family a special name!",
+                    placeholder: "e.g., The Bubu Squad",
+                    inputType: .text,
+                    key: "family_name"
+                ),
+                OnboardingPage(
+                    id: "completion",
+                    type: .textImage,
+                    title: "You're all set! 🎉",
+                    subtitle: "Let's start building your amazing Labubu collection together"
+                )
+            ]
+        )
     }
     
     // MARK: - Remote Database Simulation
