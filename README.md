@@ -1,16 +1,18 @@
 # OnboardingSDK
 
 A dynamic, JSON-driven onboarding SDK for iOS apps built with SwiftUI.
-Version 0.0.1
+**Version 0.0.0** - Enhanced Template System
 
-## Features
+## 🚀 Features
 
 ✨ **Dynamic Onboarding Flows** - Configure onboarding screens via JSON  
-🎯 **Multiple Page Types** - Text/Image, Input fields, Selectors, Sliders  
-📱 **Native SwiftUI** - Beautiful, responsive UI components  
+🎨 **Global Templates** - 5 built-in themes (Minimal, Vibrant, Corporate, Modern, Playful)  
+📊 **Modular Navigation** - 6 progress types, 5 button styles, flexible positioning  
+🎯 **Multiple Page Types** - Hero, Content, Form, Feature, Completion layouts  
+📱 **Native SwiftUI** - Beautiful, responsive UI components with animations  
 🔧 **Easy Integration** - Simple setup with app_id and flow_id  
 📊 **Analytics Ready** - Track user inputs and flow completion  
-🎨 **Customizable Styling** - Colors, fonts, and button styles via JSON  
+🌈 **Fully Customizable** - Colors, fonts, navigation styles, and layouts via JSON  
 
 ## Quick Start
 
@@ -21,7 +23,7 @@ Version 0.0.1
 Add via Xcode:
 1. File → Add Package Dependencies
 2. Enter: `https://github.com/Ciao-Apps/onboarding-ios-sdk.git`
-3. Choose "Up to Next Major Version" starting from `1.0.0`
+3. Choose "Up to Next Major Version" starting from `0.0.0`
 
 ### 2. Ultra-Lean Integration (Just 2 Lines!)
 
@@ -49,7 +51,8 @@ struct ContentView: View {
         .sheet(isPresented: $showOnboarding) {
             DynamicOnboardingView(
                 appID: "bubulab_app",
-                flowID: "bubulab_onboarding_v1"  // Loads from JSON file
+                flowID: "bubulab_enhanced_v1",  // Enhanced flow with templates
+                templateID: "vibrant"           // Optional: minimal, vibrant, corporate, modern, playful
             ) { results in
                 print("User data:", results)
                 hasCompletedOnboarding = true
@@ -89,97 +92,108 @@ Button("Reset Onboarding") {
 }
 ```
 
-## JSON Configuration
+## 🎨 Templates & Navigation
 
-Create dynamic onboarding flows using JSON:
+### Built-in Templates
 
+Choose from 5 professionally designed templates:
+
+- **`minimal`** - Clean text navigation with step counter
+- **`vibrant`** - Colorful floating buttons with bouncing bubbles  
+- **`corporate`** - Professional rectangles with gradient progress
+- **`modern`** - Sleek design with animated dots
+- **`playful`** - Fun animations with custom elements
+
+### Template Usage
+
+```swift
+// Use a specific template
+DynamicOnboardingView(
+    appID: "your_app", 
+    flowID: "your_flow",
+    templateID: "vibrant"  // Instant theme change!
+)
+
+// Or let JSON define the template
+DynamicOnboardingView(appID: "your_app", flowID: "your_flow")
+```
+
+## 📊 Navigation Styles
+
+### Progress Indicators
+- **Line** - Horizontal progress bar
+- **Dots** - Animated circular indicators  
+- **Bubbles** - Bouncing bubble animation
+- **Step Counter** - "2 of 5" text display
+- **Gradient** - Smooth color transitions
+- **None** - Hidden progress
+
+### Button Types  
+- **Circle** - Floating circular buttons
+- **Rectangle** - Clean rectangular buttons
+- **Pill** - Rounded corner buttons
+- **FAB** - Floating action buttons
+- **Text** - Minimal text-only buttons
+
+## 📱 Page Types
+
+### Hero Pages
+Large imagery with compelling headlines
 ```json
 {
-  "flowID": "fitness_onboarding_v1",
-  "appID": "fitness_tracker_app",
-  "version": "1.0",
-  "pages": [
-    {
-      "id": "welcome",
-      "type": "text_image",
-      "title": "Welcome to FitTracker",
-      "subtitle": "Your journey to better health starts here",
-      "imageURL": "https://example.com/welcome.png",
-      "style": {
-        "titleColor": "#1D1D1F",
-        "subtitleColor": "#6E6E73"
-      }
-    },
-    {
-      "id": "weight_input",
-      "type": "input",
-      "title": "What's your current weight?",
-      "placeholder": "e.g., 70 kg",
-      "inputType": "number",
-      "key": "weight"
-    },
-    {
-      "id": "goal_selection",
-      "type": "selector",
-      "title": "What's your fitness goal?",
-      "key": "fitness_goal",
-      "options": ["Lose weight", "Maintain weight", "Gain muscle"]
-    },
-    {
-      "id": "activity_level",
-      "type": "slider",
-      "title": "How active are you daily?",
-      "key": "activity_level",
-      "min": 0,
-      "max": 10,
-      "step": 1
-    }
-  ]
+  "pageType": "hero",
+  "contentType": "text_image",
+  "title": "Welcome to Your App!",
+  "subtitle": "Start your journey here",
+  "imageURL": "https://example.com/hero.png"
 }
 ```
 
-## Page Types
-
-### Text & Image
+### Content Pages  
+Balanced text and media
 ```json
 {
-  "type": "text_image",
-  "title": "Welcome!",
-  "subtitle": "Get started with our app",
-  "imageURL": "https://example.com/image.png"
+  "pageType": "content",
+  "contentType": "text_image",
+  "title": "Key Features",
+  "subtitle": "Everything you need to know",
+  "imageURL": "https://example.com/features.png"
 }
 ```
 
-### Input Field
+### Form Pages
+User input collection
 ```json
 {
-  "type": "input",
+  "pageType": "form",
+  "contentType": "input",
   "title": "Enter your email",
-  "placeholder": "your@email.com",
+  "placeholder": "your@email.com", 
   "inputType": "email",
   "key": "user_email"
 }
 ```
 
-### Selector (Multiple Choice)
+### Feature Pages
+Showcase specific capabilities
 ```json
 {
-  "type": "selector",
-  "title": "Choose your preference",
-  "key": "preference",
-  "options": ["Option A", "Option B", "Option C"]
+  "pageType": "feature",
+  "contentType": "selector",
+  "title": "Choose your plan",
+  "key": "subscription_plan",
+  "options": ["Basic", "Pro", "Enterprise"]
 }
 ```
 
-### Slider
+### Completion Pages
+Success and next steps
 ```json
 {
-  "type": "slider",
-  "title": "Set your budget",
-  "key": "budget",
-  "min": 0,
-  "max": 1000,
-  "step": 50
+  "pageType": "completion",
+  "contentType": "text_image",
+  "title": "You're all set! 🎉",
+  "subtitle": "Welcome to the community"
 }
 ```
 
@@ -206,10 +220,11 @@ Customize appearance via JSON:
 }
 ```
 
-## Available Flows
+## 📦 Available Flows
 
-The SDK loads flows from JSON files (simulating database):
-- `"bubulab_onboarding_v1"` - Labubu collection experience (6 pages)
+The SDK includes example flows:
+- `"bubulab_enhanced_v1"` - Enhanced Labubu collection experience (7 pages)
+- Supports custom template selection and navigation styles
 
 ### User Data Structure
 
@@ -255,25 +270,35 @@ OnboardingView(flow: customFlow) { results in
 }
 ```
 
-## Architecture
+## 🏗️ Architecture
 
 ```
-Sources/
-├── OnboardingSDK/
-│   ├── Models/
-│   │   └── OnboardingModels.swift      # Data models
-│   ├── Views/
-│   │   ├── DynamicOnboardingView.swift # Main entry point
-│   │   └── OnboardingView.swift        # UI components
-│   └── OnboardingSDK.swift             # SDK manager
-└── resources/
-    └── bubulab_onboarding_v1.json      # JSON flow definition
+Sources/OnboardingSDK/
+├── Models/
+│   └── TemplateSystem.swift           # Enhanced data models & templates
+├── Views/
+│   ├── DynamicOnboardingView.swift    # Main entry point (lean)
+│   └── Navigation/                    # Modular navigation system
+│       ├── NavigationRenderer.swift   # Main navigation coordinator
+│       ├── ProgressIndicators.swift   # Progress styles (dots, bubbles, etc.)
+│       ├── NavigationButtons.swift    # Button types (circle, rectangle, etc.)
+│       └── NavigationStyles.swift     # Positioning & animations
+├── ViewModels/
+│   └── EnhancedOnboardingViewModel.swift # State management
+├── Utils/
+│   ├── ImageCache.swift              # Performance optimization
+│   └── CachedAsyncImage.swift        # Cached image loading
+├── OnboardingSDK.swift               # SDK manager
+└── Resources/
+    └── bubulab_enhanced_v1.json      # Enhanced JSON flow definition
 ```
 
-### Key Components:
-- **DynamicOnboardingView** - Drop-in component that loads flows from JSON
-- **OnboardingSDK** - Manages flow loading and user data
-- **JSON files** - Define onboarding flows (simulates database)
+### ✨ Key Improvements:
+- **Modular Navigation** - Separate files for different navigation components
+- **Template System** - Global themes with consistent styling  
+- **Enhanced Performance** - Image caching and optimized rendering
+- **Type Safety** - Comprehensive Swift models matching JSON structure
+- **Clean Architecture** - MVVM pattern with clear separation of concerns
 
 ## Requirements
 
@@ -281,14 +306,20 @@ Sources/
 - Xcode 14.0+
 - Swift 5.9+
 
-## Roadmap
+## 🗺️ Roadmap
 
-- [ ] Remote JSON loading from CMS
-- [ ] A/B testing support  
-- [ ] Video background support
-- [ ] Custom animation transitions
-- [ ] Conditional page logic
-- [ ] Multi-language support
+### 🎯 Version 2.1 (Q1 2024)
+- [ ] **No-Code Constructor** - Web-based flow builder
+- [ ] **Remote JSON loading** - CMS integration
+- [ ] **A/B testing support** - Template performance comparison
+- [ ] **Additional templates** - Industry-specific themes
+
+### 🚀 Version 3.0 (Q2 2024)  
+- [ ] **Video backgrounds** - Rich media support
+- [ ] **Custom animations** - Advanced transitions
+- [ ] **Conditional logic** - Smart page flow
+- [ ] **Multi-language** - Localization support
+- [ ] **Analytics dashboard** - Flow performance insights
 
 ## Contributing
 
