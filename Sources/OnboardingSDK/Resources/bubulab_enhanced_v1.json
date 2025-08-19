@@ -3,19 +3,19 @@
   "appID": "bubulab_app",
   "version": "2.0",
   "globalTemplate": {
-    "templateID": "playful",
-    "name": "Playful",
-    "primaryColor": "#41B4E0",
-    "secondaryColor": "#FFD93D",
-    "backgroundColor": "#FFF5F8",
-    "textColor": "#2D1B4E",
+    "templateID": "minimal",
+    "name": "Minimal",
+    "primaryColor": "#000000",
+    "secondaryColor": "#6B6B6B",
+    "backgroundColor": "#FFFFFF",
+    "textColor": "#1D1D1F",
     "cornerRadius": 24,
     "navigationStyle": "floating",
     "buttonStyle": {
-      "primaryBackgroundColor": "#FFFFFF",
-      "primaryTextColor": "#000000",
-      "borderRadius": 30,
-      "height": 54
+      "primaryBackgroundColor": "#000000",
+      "primaryTextColor": "#FFFFFF",
+      "borderRadius": 8,
+      "height": 48
     },
     "spacing": {
       "small": 12,
