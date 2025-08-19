@@ -3,12 +3,12 @@
   "appID": "bubulab_app",
   "version": "2.0",
   "globalTemplate": {
-    "templateID": "minimal",
-    "name": "Minimal",
-    "primaryColor": "#000000",
-    "secondaryColor": "#6B6B6B",
-    "backgroundColor": "#FFFFFF",
-    "textColor": "#1D1D1F",
+    "templateID": "vibrant",
+    "name": "Vibrant",
+    "primaryColor": "#FF6B9D",
+    "secondaryColor": "#FFD93D",
+    "backgroundColor": "#FFF5F8",
+    "textColor": "#2D1B4E",
     "cornerRadius": 24,
     "navigationStyle": "floating",
     "buttonStyle": {
@@ -24,38 +24,44 @@
       "extraLarge": 44
     },
     "navigationLayout": {
-      "layoutID": "minimal_nav",
-      "name": "Minimal Clean",
-      "style": "minimal",
+      "layoutID": "vibrant_nav",
+      "name": "Vibrant Fun",
+      "style": "vibrant",
       "progressIndicator": {
-        "type": "step_counter",
-        "position": "top",
-        "showStepCounter": true
+        "type": "bubbles",
+        "position": "bottom",
+        "size": 12,
+        "spacing": 10
       },
       "backButton": {
-        "type": "text",
-        "position": "bottom_leading",
-        "text": "← Back",
-        "backgroundColor": "#TRANSPARENT",
-        "textColor": "#000000",
-        "cornerRadius": 0
+        "type": "circle",
+        "position": "floating_left",
+        "icon": "chevron.left",
+        "backgroundColor": "#FF6B9D",
+        "textColor": "#FFFFFF",
+        "size": 52,
+        "cornerRadius": 26,
+        "elevation": 4
       },
       "nextButton": {
-        "type": "text", 
-        "position": "bottom_trailing",
-        "text": "Next →",
-        "backgroundColor": "#TRANSPARENT",
-        "textColor": "#000000",
-        "cornerRadius": 0
+        "type": "fab", 
+        "position": "floating_right",
+        "icon": "chevron.right",
+        "backgroundColor": "#FFD93D",
+        "textColor": "#2D1B4E",
+        "size": 52,
+        "cornerRadius": 26,
+        "elevation": 4
       },
       "finishButton": {
-        "type": "rectangle",
+        "type": "pill",
         "position": "bottom_center",
         "text": "Get Started",
-        "backgroundColor": "#000000",
+        "backgroundColor": "#FF6B9D",
         "textColor": "#FFFFFF",
-        "size": 48,
-        "cornerRadius": 8
+        "size": 52,
+        "cornerRadius": 26,
+        "elevation": 6
       },
       "swipeGestures": true,
       "hapticFeedback": true,
