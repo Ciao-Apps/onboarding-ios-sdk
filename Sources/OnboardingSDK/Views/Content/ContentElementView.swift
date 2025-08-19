@@ -1,28 +1,72 @@
 import SwiftUI
 
+/// Pure content elements that can be used in any layout template
 @available(iOS 15.0, *)
-public struct OnboardingView: View {
-    @StateObject private var viewModel: OnboardingViewModel
+struct ContentElementView: View {
+    let page: OnboardingPage
+    @ObservedObject var viewModel: OnboardingViewModel
     
-    public init(flow: OnboardingFlow, onCompletion: @escaping ([String: Any]) -> Void) {
-        self._viewModel = StateObject(wrappedValue: OnboardingViewModel(flow: flow, onCompletion: onCompletion))
+    var body: some View {
+        switch page.type {
+        case .textImage:
+            TextContentView(page: page)
+            
+        case .input:
+            InputContentView(
+                page: page,
+                value: inputBinding
+            )
+            
+        case .selector:
+            SelectorContentView(
+                page: page,
+                selectedValue: selectorBinding
+            )
+            
+        case .slider:
+            SliderContentView(
+                page: page,
+                value: sliderBinding
+            )
+            
+        case .template:
+            TextContentView(page: page) // Fallback
+        }
     }
     
-    public var body: some View {
-        LayoutTemplateRenderer(viewModel: viewModel)
+    // MARK: - Bindings
+    private var inputBinding: Binding<String> {
+        Binding(
+            get: { viewModel.userInputs[page.key ?? ""] as? String ?? "" },
+            set: { viewModel.updateUserInput(key: page.key ?? "", value: $0) }
+        )
+    }
+    
+    private var selectorBinding: Binding<String> {
+        Binding(
+            get: { viewModel.userInputs[page.key ?? ""] as? String ?? page.options?.first ?? "" },
+            set: { viewModel.updateUserInput(key: page.key ?? "", value: $0) }
+        )
+    }
+    
+    private var sliderBinding: Binding<Double> {
+        Binding(
+            get: { viewModel.userInputs[page.key ?? ""] as? Double ?? page.min ?? 0 },
+            set: { viewModel.updateUserInput(key: page.key ?? "", value: $0) }
+        )
     }
 }
 
-// MARK: - Page Components
-
+// MARK: - Text Content
 @available(iOS 15.0, *)
-struct TextImagePageView: View {
+struct TextContentView: View {
     let page: OnboardingPage
     
     var body: some View {
-        VStack(spacing: 24) {
+        VStack(spacing: 20) {
+            // Image
             if let imageURL = page.imageURL {
-                AsyncImage(url: URL(string: imageURL)) { image in
+                CachedAsyncImage(url: URL(string: imageURL)) { image in
                     image
                         .resizable()
                         .aspectRatio(contentMode: .fit)
@@ -35,35 +79,53 @@ struct TextImagePageView: View {
                                 .font(.system(size: 40))
                         )
                 }
-                .frame(height: 200)
+                .frame(maxHeight: 250)
                 .clipShape(RoundedRectangle(cornerRadius: 12))
             }
             
+            // Text Content
             VStack(spacing: 12) {
                 Text(page.title)
-                    .font(.largeTitle)
+                    .font(titleFont)
                     .fontWeight(.bold)
                     .multilineTextAlignment(.center)
-                    .foregroundColor(Color(hex: page.style?.titleColor) ?? .primary)
+                    .foregroundColor(titleColor)
                 
                 if let subtitle = page.subtitle {
                     Text(subtitle)
-                        .font(.title3)
+                        .font(.body)
                         .multilineTextAlignment(.center)
-                        .foregroundColor(Color(hex: page.style?.subtitleColor) ?? .secondary)
+                        .foregroundColor(subtitleColor)
                 }
             }
         }
     }
+    
+    private var titleFont: Font {
+        if let size = page.style?.titleFontSize {
+            return .system(size: size, weight: .bold)
+        }
+        return .title
+    }
+    
+    private var titleColor: Color {
+        Color(hex: page.style?.titleColor) ?? .primary
+    }
+    
+    private var subtitleColor: Color {
+        Color(hex: page.style?.subtitleColor) ?? .secondary
+    }
 }
 
+// MARK: - Input Content
 @available(iOS 15.0, *)
-struct InputPageView: View {
+struct InputContentView: View {
     let page: OnboardingPage
     @Binding var value: String
     
     var body: some View {
         VStack(spacing: 24) {
+            // Title & Subtitle
             VStack(spacing: 12) {
                 Text(page.title)
                     .font(.title2)
@@ -78,35 +140,34 @@ struct InputPageView: View {
                 }
             }
             
+            // Input Field
             TextField(page.placeholder ?? "", text: $value)
                 .textFieldStyle(RoundedBorderTextFieldStyle())
-                .keyboardType(keyboardTypeForInput(page.inputType))
+                .keyboardType(keyboardType)
                 .autocapitalization(.none)
                 .disableAutocorrection(true)
                 .font(.title3)
-                .padding(.vertical, 4)
         }
     }
     
-    private func keyboardTypeForInput(_ inputType: InputType?) -> UIKeyboardType {
-        switch inputType {
-        case .number:
-            return .numberPad
-        case .email:
-            return .emailAddress
-        default:
-            return .default
+    private var keyboardType: UIKeyboardType {
+        switch page.inputType {
+        case .number: return .numberPad
+        case .email: return .emailAddress
+        default: return .default
         }
     }
 }
 
+// MARK: - Selector Content
 @available(iOS 15.0, *)
-struct SelectorPageView: View {
+struct SelectorContentView: View {
     let page: OnboardingPage
     @Binding var selectedValue: String
     
     var body: some View {
         VStack(spacing: 24) {
+            // Title & Subtitle
             VStack(spacing: 12) {
                 Text(page.title)
                     .font(.title2)
@@ -121,6 +182,7 @@ struct SelectorPageView: View {
                 }
             }
             
+            // Options
             VStack(spacing: 12) {
                 ForEach(page.options ?? [], id: \.self) { option in
                     Button(action: {
@@ -149,13 +211,15 @@ struct SelectorPageView: View {
     }
 }
 
+// MARK: - Slider Content
 @available(iOS 15.0, *)
-struct SliderPageView: View {
+struct SliderContentView: View {
     let page: OnboardingPage
     @Binding var value: Double
     
     var body: some View {
         VStack(spacing: 24) {
+            // Title & Subtitle
             VStack(spacing: 12) {
                 Text(page.title)
                     .font(.title2)
@@ -170,6 +234,7 @@ struct SliderPageView: View {
                 }
             }
             
+            // Slider
             VStack(spacing: 16) {
                 Text("\(Int(value))")
                     .font(.largeTitle)
@@ -194,60 +259,5 @@ struct SliderPageView: View {
                 .accentColor(.blue)
             }
         }
-    }
-}
-
-// MARK: - Button Styles
-
-@available(iOS 15.0, *)
-struct OnboardingPrimaryButtonStyle: SwiftUI.ButtonStyle {
-    func makeBody(configuration: SwiftUI.ButtonStyle.Configuration) -> some View {
-        configuration.label
-            .font(.headline)
-            .foregroundColor(.white)
-            .frame(maxWidth: .infinity)
-            .frame(height: 52)
-            .background(
-                RoundedRectangle(cornerRadius: 26)
-                    .fill(Color.blue)
-                    .opacity(configuration.isPressed ? 0.8 : 1.0)
-            )
-    }
-}
-
-@available(iOS 15.0, *)
-struct OnboardingSecondaryButtonStyle: SwiftUI.ButtonStyle {
-    func makeBody(configuration: SwiftUI.ButtonStyle.Configuration) -> some View {
-        configuration.label
-            .font(.headline)
-            .foregroundColor(.blue)
-            .frame(height: 52)
-            .padding(.horizontal, 24)
-            .background(
-                RoundedRectangle(cornerRadius: 26)
-                    .stroke(Color.blue, lineWidth: 2)
-                    .opacity(configuration.isPressed ? 0.8 : 1.0)
-            )
-    }
-}
-
-// MARK: - Extensions
-
-@available(iOS 15.0, *)
-extension Color {
-    init?(hex: String?) {
-        guard let hex = hex else { return nil }
-        let cleanHex = hex.replacingOccurrences(of: "#", with: "")
-        
-        guard cleanHex.count == 6 else { return nil }
-        
-        var rgbValue: UInt64 = 0
-        Scanner(string: cleanHex).scanHexInt64(&rgbValue)
-        
-        self.init(
-            red: Double((rgbValue & 0xFF0000) >> 16) / 255.0,
-            green: Double((rgbValue & 0x00FF00) >> 8) / 255.0,
-            blue: Double(rgbValue & 0x0000FF) / 255.0
-        )
     }
 }

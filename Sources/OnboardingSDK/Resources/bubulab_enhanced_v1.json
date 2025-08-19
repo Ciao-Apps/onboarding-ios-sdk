@@ -10,25 +10,13 @@
       "subtitle": "Your ultimate Labubu collection companion",
       "imageURL": "https://images.unsplash.com/photo-1755306064502-6df8d7ee33f7",
       "style": {
-        "template": "hero",
+        "template": "full_screen",
         "titleColor": "#FFFFFF",
         "subtitleColor": "#E0E0E0", 
         "titleFontSize": 32,
         "subtitleFontSize": 18,
         "backgroundColor": "#FF6B9D",
         "contentAlignment": "center",
-        "imagePosition": "background",
-        "imageSize": {
-          "width": 400,
-          "height": 300,
-          "aspectRatio": 1.33
-        },
-        "padding": {
-          "top": 60,
-          "bottom": 40,
-          "leading": 20,
-          "trailing": 20
-        },
         "spacing": 24
       }
     },
@@ -44,17 +32,10 @@
         "Expert/Trader 💎"
       ],
       "style": {
-        "template": "card",
+        "template": "classic",
         "titleColor": "#1D1D1F",
         "titleFontSize": 24,
         "backgroundColor": "#FFFFFF",
-        "contentAlignment": "top",
-        "padding": {
-          "top": 40,
-          "bottom": 30,
-          "leading": 20,
-          "trailing": 20
-        },
         "spacing": 20
       }
     },
@@ -71,17 +52,10 @@
         "Investment purposes"
       ],
       "style": {
-        "template": "fullwidth",
+        "template": "modern",
         "titleColor": "#1D1D1F",
         "titleFontSize": 26,
         "backgroundColor": "#F8F9FA",
-        "contentAlignment": "center",
-        "padding": {
-          "top": 32,
-          "bottom": 32,
-          "leading": 20,
-          "trailing": 20
-        },
         "spacing": 24
       }
     },
@@ -96,17 +70,11 @@
       "step": 25,
       "imageURL": "https://images.unsplash.com/photo-1607863680198-23d4b2565df0?w=200",
       "style": {
-        "template": "creative_slider",
+        "template": "card_stack",
         "titleColor": "#FFFFFF",
         "subtitleColor": "#E3F2FD",
         "titleFontSize": 28,
         "backgroundColor": "#2196F3",
-        "contentAlignment": "center",
-        "imagePosition": "leading",
-        "imageSize": {
-          "width": 80,
-          "height": 80
-        },
         "spacing": 30
       }
     },
@@ -140,12 +108,11 @@
       "inputType": "text",
       "key": "family_name",
       "style": {
-        "template": "split",
+        "template": "classic",
         "titleColor": "#1D1D1F",
         "subtitleColor": "#6E6E73",
         "titleFontSize": 24,
         "backgroundColor": "#FFFFFF",
-        "contentAlignment": "center",
         "spacing": 20
       }
     },
@@ -156,14 +123,12 @@
       "subtitle": "Let's start building your amazing Labubu collection together",
       "imageURL": "https://images.unsplash.com/photo-1513475382585-d06e58bcb0e0?w=400",
       "style": {
-        "template": "hero",
+        "template": "full_screen",
         "titleColor": "#FFFFFF",
         "subtitleColor": "#E0E0E0",
         "titleFontSize": 34,
         "subtitleFontSize": 18,
         "backgroundColor": "#4CAF50",
-        "contentAlignment": "center",
-        "imagePosition": "background",
         "spacing": 24
       },
       "button": {
