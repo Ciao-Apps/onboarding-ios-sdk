@@ -1,145 +1,119 @@
 {
   "flowID": "bubulab_enhanced_v1",
-  "appID": "bubulab_app", 
+  "appID": "bubulab_app",
   "version": "2.0",
+  "globalTemplate": {
+    "templateID": "playful",
+    "name": "Playful",
+    "primaryColor": "#FF6B9D",
+    "secondaryColor": "#FFD93D",
+    "backgroundColor": "#FFF5F8",
+    "textColor": "#2D1B4E",
+    "cornerRadius": 24,
+    "navigationStyle": "floating",
+    "buttonStyle": {
+      "primaryBackgroundColor": "#FF6B9D",
+      "primaryTextColor": "#FFFFFF",
+      "borderRadius": 30,
+      "height": 54
+    },
+    "spacing": {
+      "small": 12,
+      "medium": 20,
+      "large": 30,
+      "extraLarge": 44
+    }
+  },
   "pages": [
     {
       "id": "hero_welcome",
-      "type": "text_image",
+      "pageType": "hero",
+      "contentType": "text_image",
       "title": "Welcome to Bubulab! 🧸",
       "subtitle": "Your ultimate Labubu collection companion",
       "imageURL": "https://images.unsplash.com/photo-1755306064502-6df8d7ee33f7",
-      "style": {
-        "template": "full_screen",
-        "titleColor": "#FFFFFF",
-        "subtitleColor": "#E0E0E0", 
-        "titleFontSize": 32,
-        "subtitleFontSize": 18,
+      "overrides": {
         "backgroundColor": "#FF6B9D",
-        "contentAlignment": "center",
-        "spacing": 24
+        "textColor": "#FFFFFF"
       }
     },
     {
       "id": "experience_card",
-      "type": "selector",
+      "pageType": "form",
+      "contentType": "selector",
       "title": "How experienced are you with Labubu collecting?",
+      "subtitle": "This helps us personalize your experience",
       "key": "experience_level",
       "options": [
         "Just starting out 🌱",
         "Collecting for a while 📚", 
         "Experienced collector 🏆",
         "Expert/Trader 💎"
-      ],
-      "style": {
-        "template": "classic",
-        "titleColor": "#1D1D1F",
-        "titleFontSize": 24,
-        "backgroundColor": "#FFFFFF",
-        "spacing": 20
-      }
+      ]
     },
     {
       "id": "collection_goal",
-      "type": "selector",
+      "pageType": "content",
+      "contentType": "selector",
       "title": "What's your main collecting goal?",
+      "subtitle": "We'll help you achieve it!",
+      "imageURL": "https://images.unsplash.com/photo-1513475382585-d06e58bcb0e0?w=400",
       "key": "collection_goal",
       "options": [
         "Complete specific series",
-        "Collect rare pieces",
+        "Collect rare pieces", 
         "Track collection value",
         "Share with community",
         "Investment purposes"
-      ],
-      "style": {
-        "template": "modern",
-        "titleColor": "#1D1D1F",
-        "titleFontSize": 26,
-        "backgroundColor": "#F8F9FA",
-        "spacing": 24
-      }
+      ]
     },
     {
-      "id": "budget_creative", 
-      "type": "slider",
-      "title": "Monthly Budget",
-      "subtitle": "Slide to set your comfort zone",
+      "id": "budget_creative",
+      "pageType": "form",
+      "contentType": "slider",
+      "title": "What's your monthly collecting budget?",
+      "subtitle": "This helps us show relevant items and deals",
+      "imageURL": "https://images.unsplash.com/photo-1607863680198-23d4b2565df0?w=200",
       "key": "monthly_budget",
       "min": 0,
       "max": 500,
       "step": 25,
-      "imageURL": "https://images.unsplash.com/photo-1607863680198-23d4b2565df0?w=200",
-      "style": {
-        "template": "card_stack",
-        "titleColor": "#FFFFFF",
-        "subtitleColor": "#E3F2FD",
-        "titleFontSize": 28,
+      "overrides": {
         "backgroundColor": "#2196F3",
-        "spacing": 30
+        "textColor": "#FFFFFF"
       }
     },
     {
       "id": "notifications",
-      "type": "selector", 
+      "pageType": "content",
+      "contentType": "selector",
       "title": "How would you like to stay updated?",
+      "subtitle": "Choose your notification preferences",
       "key": "notification_preferences",
       "options": [
         "New releases & restocks",
         "Price alerts only",
-        "Community updates",
-        "All notifications", 
+        "Community updates", 
+        "All notifications",
         "No notifications"
-      ],
-      "style": {
-        "template": "minimal",
-        "titleColor": "#1D1D1F",
-        "titleFontSize": 22,
-        "backgroundColor": "#FFFFFF",
-        "contentAlignment": "center",
-        "spacing": 20
-      }
+      ]
     },
     {
       "id": "family_name",
-      "type": "input",
+      "pageType": "form",
+      "contentType": "input",
       "title": "What should we call your collection family?",
       "subtitle": "Give your Labubu family a special name!",
       "placeholder": "e.g., The Bubu Squad",
       "inputType": "text",
-      "key": "family_name",
-      "style": {
-        "template": "classic",
-        "titleColor": "#1D1D1F",
-        "subtitleColor": "#6E6E73",
-        "titleFontSize": 24,
-        "backgroundColor": "#FFFFFF",
-        "spacing": 20
-      }
+      "key": "family_name"
     },
     {
       "id": "completion",
-      "type": "text_image",
+      "pageType": "completion",
+      "contentType": "text_image",
       "title": "You're all set! 🎉",
-      "subtitle": "Let's start building your amazing Labubu collection together",
-      "imageURL": "https://images.unsplash.com/photo-1513475382585-d06e58bcb0e0?w=400",
-      "style": {
-        "template": "full_screen",
-        "titleColor": "#FFFFFF",
-        "subtitleColor": "#E0E0E0",
-        "titleFontSize": 34,
-        "subtitleFontSize": 18,
-        "backgroundColor": "#4CAF50",
-        "spacing": 24
-      },
-      "button": {
-        "title": "Start Collecting",
-        "action": "finish",
-        "style": {
-          "backgroundColor": "#FFFFFF",
-          "textColor": "#4CAF50",
-          "cornerRadius": 25
-        }
-      }
+      "subtitle": "Let's start building your amazing Labubu collection together"
     }
   ]
 }
