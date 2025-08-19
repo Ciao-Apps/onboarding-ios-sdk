@@ -94,28 +94,69 @@ struct OnboardingView: View {
                 ProgressView("Finishing up...")
                     .foregroundColor(viewModel.templateTextColor)
             } else {
+                EnhancedNavigationRenderer(viewModel: viewModel)
+            }
+        }
+    }
+}
+
+/// Enhanced navigation renderer using NavigationLayoutConfig
+@available(iOS 15.0, *)
+struct EnhancedNavigationRenderer: View {
+    @ObservedObject var viewModel: EnhancedOnboardingViewModel
+    
+    private var navigationLayout: NavigationLayoutConfig? {
+        viewModel.template.navigationLayout
+    }
+    
+    var body: some View {
+        ZStack {
+            // Main content area
+            GeometryReader { geometry in
                 VStack(spacing: 0) {
-                    // Progress indicator (except for immersive)
-                    if viewModel.navigationStyle != .immersive {
-                        ProgressView(value: viewModel.progress)
-                            .progressViewStyle(LinearProgressViewStyle(tint: viewModel.templatePrimaryColor))
-                            .padding(.horizontal, viewModel.mediumSpacing)
-                            .padding(.top, viewModel.smallSpacing)
+                    // Top progress indicator
+                    if let layout = navigationLayout,
+                       layout.progressIndicator.position == .top || layout.progressIndicator.position == .topSafe {
+                        EnhancedProgressIndicator(
+                            config: layout.progressIndicator,
+                            progress: viewModel.progress,
+                            viewModel: viewModel
+                        )
+                        .padding(.top, layout.progressIndicator.position == .topSafe ? 20 : 0)
                     }
                     
-                    // Main content
+                    // Main content with padding from navigation layout
                     TabView(selection: $viewModel.currentPageIndex) {
                         ForEach(Array(viewModel.flow.pages.enumerated()), id: \.element.id) { index, page in
                             PageView(page: page, viewModel: viewModel)
+                                .padding(.top, navigationLayout?.contentPadding?.top ?? 0)
+                                .padding(.bottom, navigationLayout?.contentPadding?.bottom ?? 0)
+                                .padding(.leading, navigationLayout?.contentPadding?.leading ?? 0)
+                                .padding(.trailing, navigationLayout?.contentPadding?.trailing ?? 0)
                                 .tag(index)
                         }
                     }
                     .tabViewStyle(PageTabViewStyle(indexDisplayMode: .never))
                     .disabled(viewModel.isNavigating)
                     
-                    // Navigation
-                    NavigationView(viewModel: viewModel)
+                    Spacer()
+                    
+                    // Bottom progress indicator
+                    if let layout = navigationLayout,
+                       layout.progressIndicator.position == .bottom || layout.progressIndicator.position == .bottomSafe {
+                        EnhancedProgressIndicator(
+                            config: layout.progressIndicator,
+                            progress: viewModel.progress,
+                            viewModel: viewModel
+                        )
+                        .padding(.bottom, layout.progressIndicator.position == .bottomSafe ? 20 : 0)
+                    }
                 }
+            }
+            
+            // Navigation buttons overlay
+            if let layout = navigationLayout {
+                EnhancedNavigationButtons(layout: layout, viewModel: viewModel)
             }
         }
     }
@@ -592,6 +633,291 @@ struct SliderElement: View {
             if let key = page.key {
                 sliderValue = viewModel.userInputs[key] as? Double ?? page.min ?? 0
             }
+        }
+    }
+}
+
+// MARK: - Enhanced Navigation Components
+
+/// Enhanced progress indicator that supports different types and animations
+@available(iOS 15.0, *)
+struct EnhancedProgressIndicator: View {
+    let config: ProgressIndicatorConfig
+    let progress: Double
+    @ObservedObject var viewModel: EnhancedOnboardingViewModel
+    
+    var body: some View {
+        switch config.type {
+        case .line:
+            ProgressView(value: progress)
+                .progressViewStyle(LinearProgressViewStyle(tint: viewModel.templatePrimaryColor))
+                .frame(height: config.height ?? 3)
+                .padding(.horizontal, 20)
+                
+        case .dots:
+            HStack(spacing: config.spacing ?? 8) {
+                ForEach(0..<viewModel.flow.pages.count, id: \.self) { index in
+                    Circle()
+                        .fill(index <= viewModel.currentPageIndex ? viewModel.templatePrimaryColor : viewModel.templateSecondaryColor.opacity(0.3))
+                        .frame(width: config.size ?? 8, height: config.size ?? 8)
+                        .scaleEffect(index == viewModel.currentPageIndex ? 1.2 : 1.0)
+                        .animation(.easeInOut(duration: 0.3), value: viewModel.currentPageIndex)
+                }
+            }
+            .padding(.horizontal, 20)
+            
+        case .bubbles:
+            HStack(spacing: config.spacing ?? 8) {
+                ForEach(0..<viewModel.flow.pages.count, id: \.self) { index in
+                    Circle()
+                        .fill(index <= viewModel.currentPageIndex ? viewModel.templatePrimaryColor : viewModel.templateSecondaryColor.opacity(0.2))
+                        .frame(width: config.size ?? 12, height: config.size ?? 12)
+                        .scaleEffect(index == viewModel.currentPageIndex ? 1.3 : 1.0)
+                        .offset(y: index == viewModel.currentPageIndex ? -2 : 0)
+                        .animation(.bouncy, value: viewModel.currentPageIndex)
+                }
+            }
+            .padding(.horizontal, 20)
+            
+        case .stepCounter:
+            Text("\(viewModel.currentPageIndex + 1) of \(viewModel.flow.pages.count)")
+                .font(.caption)
+                .foregroundColor(viewModel.templateSecondaryColor)
+                .padding(.horizontal, 20)
+                
+        case .gradient:
+            GeometryReader { geometry in
+                ZStack(alignment: .leading) {
+                    Rectangle()
+                        .fill(viewModel.templateSecondaryColor.opacity(0.2))
+                        .frame(height: config.height ?? 4)
+                    
+                    Rectangle()
+                        .fill(
+                            LinearGradient(
+                                gradient: Gradient(colors: [viewModel.templatePrimaryColor, viewModel.templateSecondaryColor]),
+                                startPoint: .leading,
+                                endPoint: .trailing
+                            )
+                        )
+                        .frame(width: geometry.size.width * progress, height: config.height ?? 4)
+                        .animation(.easeInOut(duration: 0.3), value: progress)
+                }
+            }
+            .frame(height: config.height ?? 4)
+            .padding(.horizontal, 20)
+            
+        case .none:
+            EmptyView()
+        }
+    }
+}
+
+/// Enhanced navigation buttons with different types and positions
+@available(iOS 15.0, *)
+struct EnhancedNavigationButtons: View {
+    let layout: NavigationLayoutConfig
+    @ObservedObject var viewModel: EnhancedOnboardingViewModel
+    
+    var body: some View {
+        ZStack {
+            // Back button
+            if viewModel.canGoBack {
+                NavigationButton(
+                    config: layout.backButton,
+                    action: { viewModel.goBack() },
+                    viewModel: viewModel
+                )
+            }
+            
+            // Next/Finish button
+            if viewModel.isLastPage {
+                if let finishConfig = layout.finishButton {
+                    NavigationButton(
+                        config: finishConfig,
+                        action: { viewModel.finishOnboarding() },
+                        isEnabled: viewModel.canProceed,
+                        viewModel: viewModel
+                    )
+                } else {
+                    NavigationButton(
+                        config: layout.nextButton,
+                        action: { viewModel.finishOnboarding() },
+                        isEnabled: viewModel.canProceed,
+                        text: "Finish",
+                        viewModel: viewModel
+                    )
+                }
+            } else {
+                NavigationButton(
+                    config: layout.nextButton,
+                    action: { viewModel.goForward() },
+                    isEnabled: viewModel.canProceed,
+                    viewModel: viewModel
+                )
+            }
+        }
+    }
+}
+
+/// Individual navigation button renderer
+@available(iOS 15.0, *)
+struct NavigationButton: View {
+    let config: NavigationButtonConfig
+    let action: () -> Void
+    let isEnabled: Bool
+    let text: String?
+    @ObservedObject var viewModel: EnhancedOnboardingViewModel
+    
+    init(
+        config: NavigationButtonConfig,
+        action: @escaping () -> Void,
+        isEnabled: Bool = true,
+        text: String? = nil,
+        viewModel: EnhancedOnboardingViewModel
+    ) {
+        self.config = config
+        self.action = action
+        self.isEnabled = isEnabled
+        self.text = text
+        self.viewModel = viewModel
+    }
+    
+    var body: some View {
+        Button(action: action) {
+            buttonContent
+        }
+        .disabled(!isEnabled)
+        .opacity(isEnabled ? 1.0 : 0.6)
+        .buttonStyle(EnhancedButtonStyle(config: config, viewModel: viewModel))
+        .position(for: config.position)
+    }
+    
+    @ViewBuilder
+    private var buttonContent: some View {
+        switch config.type {
+        case .circle:
+            if let icon = config.icon {
+                Image(systemName: icon)
+                    .font(.system(size: (config.size ?? 44) * 0.4))
+                    .foregroundColor(viewModel.templatePrimaryColor)
+            }
+            
+        case .pill, .rectangle, .fab:
+            HStack(spacing: 8) {
+                if let text = text ?? config.text {
+                    Text(text)
+                        .font(.headline)
+                        .foregroundColor(viewModel.primaryButtonTextColor)
+                }
+                
+                if let icon = config.icon {
+                    Image(systemName: icon)
+                        .font(.system(size: 16, weight: .medium))
+                        .foregroundColor(viewModel.primaryButtonTextColor)
+                }
+            }
+            .padding(.horizontal, 20)
+            .padding(.vertical, 12)
+            
+        case .text:
+            if let text = text ?? config.text {
+                Text(text)
+                    .font(.system(size: config.size ?? 16))
+                    .foregroundColor(viewModel.templateSecondaryColor)
+            }
+            
+        case .invisible:
+            EmptyView()
+        }
+    }
+}
+
+/// Enhanced button style that applies the configuration
+@available(iOS 15.0, *)
+struct EnhancedButtonStyle: ButtonStyle {
+    let config: NavigationButtonConfig
+    @ObservedObject var viewModel: EnhancedOnboardingViewModel
+    
+    func makeBody(configuration: Configuration) -> some View {
+        configuration.label
+            .background(backgroundForType)
+            .clipShape(shapeForType)
+            .shadow(radius: config.elevation ?? 0)
+            .scaleEffect(configuration.isPressed ? 0.95 : 1.0)
+            .animation(.easeInOut(duration: 0.1), value: configuration.isPressed)
+    }
+    
+    @ViewBuilder
+    private var backgroundForType: some View {
+        switch config.type {
+        case .circle, .fab:
+            Circle()
+                .fill(viewModel.primaryButtonBackgroundColor)
+                .frame(width: config.size ?? 44, height: config.size ?? 44)
+                
+        case .pill:
+            RoundedRectangle(cornerRadius: config.cornerRadius ?? 25)
+                .fill(viewModel.primaryButtonBackgroundColor)
+                .frame(height: config.size ?? 50)
+                
+        case .rectangle:
+            RoundedRectangle(cornerRadius: config.cornerRadius ?? 8)
+                .fill(viewModel.primaryButtonBackgroundColor)
+                .frame(height: config.size ?? 48)
+                
+        case .text, .invisible:
+            Color.clear
+        }
+    }
+    
+    @ViewBuilder
+    private var shapeForType: some Shape {
+        switch config.type {
+        case .circle, .fab:
+            Circle()
+        case .pill, .rectangle:
+            RoundedRectangle(cornerRadius: config.cornerRadius ?? 8)
+        case .text, .invisible:
+            Rectangle()
+        }
+    }
+}
+
+/// View extension for positioning buttons
+@available(iOS 15.0, *)
+extension View {
+    func position(for position: ButtonPosition) -> some View {
+        GeometryReader { geometry in
+            self
+                .position(
+                    x: xPosition(for: position, in: geometry),
+                    y: yPosition(for: position, in: geometry)
+                )
+        }
+    }
+    
+    private func xPosition(for position: ButtonPosition, in geometry: GeometryProxy) -> CGFloat {
+        switch position {
+        case .bottomLeading, .topLeading, .centerLeading, .floatingLeft:
+            return geometry.size.width * 0.15
+        case .bottomTrailing, .topTrailing, .centerTrailing, .floatingRight:
+            return geometry.size.width * 0.85
+        case .bottomCenter:
+            return geometry.size.width * 0.5
+        }
+    }
+    
+    private func yPosition(for position: ButtonPosition, in geometry: GeometryProxy) -> CGFloat {
+        switch position {
+        case .topLeading, .topTrailing:
+            return geometry.size.height * 0.1
+        case .centerLeading, .centerTrailing:
+            return geometry.size.height * 0.5
+        case .floatingLeft, .floatingRight:
+            return geometry.size.height * 0.85
+        case .bottomLeading, .bottomTrailing, .bottomCenter:
+            return geometry.size.height * 0.92
         }
     }
 }
