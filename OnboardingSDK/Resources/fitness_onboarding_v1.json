@@ -1,0 +1,61 @@
+{
+  "flowID": "fitness_onboarding_v1",
+  "appID": "fitness_tracker_app",
+  "version": "1.0",
+  "pages": [
+    {
+      "id": "welcome",
+      "type": "text_image",
+      "title": "Welcome to FitTracker",
+      "subtitle": "Your journey to better health starts here",
+      "imageURL": "https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=400&h=300&fit=crop",
+      "style": {
+        "titleColor": "#1D1D1F",
+        "subtitleColor": "#6E6E73"
+      }
+    },
+    {
+      "id": "weight_input",
+      "type": "input",
+      "title": "What's your current weight?",
+      "subtitle": "This helps us personalize your fitness plan",
+      "placeholder": "e.g., 70 kg",
+      "inputType": "number",
+      "key": "weight"
+    },
+    {
+      "id": "goal_selection",
+      "type": "selector",
+      "title": "What's your fitness goal?",
+      "subtitle": "Choose your primary objective",
+      "key": "fitness_goal",
+      "options": ["Lose weight", "Maintain weight", "Gain muscle", "Improve endurance"]
+    },
+    {
+      "id": "activity_level",
+      "type": "slider",
+      "title": "How active are you daily?",
+      "subtitle": "0 = Sedentary, 10 = Very Active",
+      "key": "activity_level",
+      "min": 0,
+      "max": 10,
+      "step": 1
+    },
+    {
+      "id": "completion",
+      "type": "text_image",
+      "title": "You're all set!",
+      "subtitle": "Let's create your personalized fitness plan",
+      "imageURL": "https://images.unsplash.com/photo-1549476464-37392f717541?w=400&h=300&fit=crop",
+      "button": {
+        "title": "Start My Journey",
+        "action": "finish",
+        "style": {
+          "backgroundColor": "#007AFF",
+          "textColor": "#FFFFFF",
+          "cornerRadius": 25
+        }
+      }
+    }
+  ]
+}
