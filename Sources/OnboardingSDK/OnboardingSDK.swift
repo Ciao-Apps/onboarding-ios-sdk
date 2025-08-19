@@ -2,6 +2,7 @@ import Foundation
 import SwiftUI
 
 // MARK: - Main SDK Class
+@available(iOS 15.0, *)
 public class OnboardingSDK: ObservableObject {
     public static let shared = OnboardingSDK()
     

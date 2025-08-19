@@ -2,6 +2,7 @@ import SwiftUI
 
 /// A lean, drop-in onboarding view that fetches flows from the SDK
 /// Just add this to your existing app structure - no changes needed
+@available(iOS 15.0, *)
 public struct DynamicOnboardingView: View {
     let appID: String
     let flowID: String
@@ -70,6 +71,7 @@ public struct DynamicOnboardingView: View {
 
 // MARK: - Helper Views
 
+@available(iOS 15.0, *)
 private struct LoadingView: View {
     var body: some View {
         VStack(spacing: 20) {
@@ -85,6 +87,7 @@ private struct LoadingView: View {
     }
 }
 
+@available(iOS 15.0, *)
 private struct ErrorView: View {
     let message: String
     let onRetry: () -> Void
@@ -115,6 +118,7 @@ private struct ErrorView: View {
     }
 }
 
+@available(iOS 15.0, *)
 private struct RetryButtonStyle: ButtonStyle {
     func makeBody(configuration: Configuration) -> some View {
         configuration.label
@@ -131,6 +135,7 @@ private struct RetryButtonStyle: ButtonStyle {
 
 // MARK: - Alternative: Even Simpler Hook
 /// Ultra-minimal onboarding hook - just returns the view when ready
+@available(iOS 15.0, *)
 public struct OnboardingHook {
     public static func loadOnboarding(
         appID: String,

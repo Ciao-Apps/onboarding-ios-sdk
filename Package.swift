@@ -5,6 +5,7 @@ import PackageDescription
 
 let package = Package(
     name: "OnboardingSDK",
+    defaultLocalization: "en",
     platforms: [
         .iOS(.v15)
     ],
@@ -21,9 +22,5 @@ let package = Package(
             name: "OnboardingSDK",
             dependencies: [],
             path: "Sources"),
-        .testTarget(
-            name: "OnboardingSDKTests",
-            dependencies: ["OnboardingSDK"],
-            path: "Tests"),
     ]
 )

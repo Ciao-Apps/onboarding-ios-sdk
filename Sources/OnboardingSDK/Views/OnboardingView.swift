@@ -1,5 +1,6 @@
 import SwiftUI
 
+@available(iOS 15.0, *)
 public struct OnboardingView: View {
     let flow: OnboardingFlow
     let onCompletion: ([String: Any]) -> Void
@@ -139,6 +140,7 @@ public struct OnboardingView: View {
 
 // MARK: - Page Components
 
+@available(iOS 15.0, *)
 struct TextImagePageView: View {
     let page: OnboardingPage
     
@@ -180,6 +182,7 @@ struct TextImagePageView: View {
     }
 }
 
+@available(iOS 15.0, *)
 struct InputPageView: View {
     let page: OnboardingPage
     @Binding var value: String
@@ -222,6 +225,7 @@ struct InputPageView: View {
     }
 }
 
+@available(iOS 15.0, *)
 struct SelectorPageView: View {
     let page: OnboardingPage
     @Binding var selectedValue: String
@@ -270,6 +274,7 @@ struct SelectorPageView: View {
     }
 }
 
+@available(iOS 15.0, *)
 struct SliderPageView: View {
     let page: OnboardingPage
     @Binding var value: Double
@@ -319,6 +324,7 @@ struct SliderPageView: View {
 
 // MARK: - Button Styles
 
+@available(iOS 15.0, *)
 struct PrimaryButtonStyle: ButtonStyle {
     func makeBody(configuration: Configuration) -> some View {
         configuration.label
@@ -334,6 +340,7 @@ struct PrimaryButtonStyle: ButtonStyle {
     }
 }
 
+@available(iOS 15.0, *)
 struct SecondaryButtonStyle: ButtonStyle {
     func makeBody(configuration: Configuration) -> some View {
         configuration.label
@@ -351,6 +358,7 @@ struct SecondaryButtonStyle: ButtonStyle {
 
 // MARK: - Extensions
 
+@available(iOS 15.0, *)
 extension Color {
     init?(hex: String?) {
         guard let hex = hex else { return nil }
