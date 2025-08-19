@@ -15,19 +15,17 @@ struct ImageElement: View {
     }
     
     var body: some View {
-        Group {
-            if let imageURL = page.imageURL {
-                AsyncImage(url: URL(string: imageURL)) { image in
-                    image
-                        .resizable()
-                        .aspectRatio(contentMode: imageContentMode)
-                } placeholder: {
-                    placeholderView
-                }
-                .frame(width: imageWidth, height: imageHeight)
-                .clipped()
-                .modifier(imageStyleModifier)
+        if let imageURL = page.imageURL {
+            AsyncImage(url: URL(string: imageURL)) { image in
+                image
+                    .resizable()
+                    .aspectRatio(contentMode: imageContentMode)
+            } placeholder: {
+                placeholderView
             }
+            .frame(width: imageWidth, height: imageHeight)
+            .clipped()
+            .modifier(ImageStyleModifier(style: style))
         }
     }
     
@@ -44,12 +42,12 @@ struct ImageElement: View {
     private var imageWidth: CGFloat? {
         switch style {
         case .fullWidth, .hero: return nil  // Full width
-        default: return page.style?.imageSize?.width.map(CGFloat.init)
+        default: return page.style?.imageSize?.width.map { CGFloat($0) }
         }
     }
     
     private var imageHeight: CGFloat? {
-        let styleHeight = page.style?.imageSize?.height.map(CGFloat.init)
+        let styleHeight = page.style?.imageSize?.height.map { CGFloat($0) }
         switch style {
         case .card: return styleHeight ?? 200
         case .fullWidth: return styleHeight ?? 250
@@ -86,26 +84,30 @@ struct ImageElement: View {
         }
     }
     
-    @ViewBuilder
-    private var imageStyleModifier: some View {
+
+}
+
+// MARK: - Image Style Modifier
+@available(iOS 15.0, *)
+struct ImageStyleModifier: ViewModifier {
+    let style: ImageElement.ImageDisplayStyle
+    
+    func body(content: Content) -> some View {
         switch style {
         case .card:
-            RoundedRectangle(cornerRadius: 12)
+            content
                 .clipShape(RoundedRectangle(cornerRadius: 12))
                 
-        case .fullWidth:
-            Rectangle()  // No borders, no corners
-                
-        case .hero:
-            Rectangle()  // Full background
+        case .fullWidth, .hero:
+            content  // No clipping for full width/hero
                 
         case .floating:
-            RoundedRectangle(cornerRadius: 16)
+            content
                 .clipShape(RoundedRectangle(cornerRadius: 16))
                 .shadow(color: .black.opacity(0.1), radius: 10, x: 0, y: 5)
                 
         case .minimal:
-            RoundedRectangle(cornerRadius: 8)
+            content
                 .clipShape(RoundedRectangle(cornerRadius: 8))
         }
     }
