@@ -26,7 +26,7 @@ public struct OnboardingPage: Codable, Identifiable {
     public let placeholder: String?
     public let inputType: InputType?
     public let key: String?
-    public let options: [String]
+    public let options: [String]?
     public let min: Double?
     public let max: Double?
     public let step: Double?
@@ -42,7 +42,7 @@ public struct OnboardingPage: Codable, Identifiable {
         placeholder: String? = nil,
         inputType: InputType? = nil,
         key: String? = nil,
-        options: [String] = [],
+        options: [String]? = nil,
         min: Double? = nil,
         max: Double? = nil,
         step: Double? = nil,

@@ -89,7 +89,7 @@ public struct OnboardingView: View {
                 SelectorPageView(
                     page: page,
                     selectedValue: Binding(
-                        get: { userInputs[page.key ?? ""] as? String ?? page.options.first ?? "" },
+                        get: { userInputs[page.key ?? ""] as? String ?? page.options?.first ?? "" },
                         set: { newValue in
                             if let key = page.key {
                                 userInputs[key] = newValue
@@ -247,7 +247,7 @@ struct SelectorPageView: View {
             }
             
             VStack(spacing: 12) {
-                ForEach(page.options, id: \.self) { option in
+                ForEach(page.options ?? [], id: \.self) { option in
                     Button(action: {
                         selectedValue = option
                     }) {
