@@ -17,71 +17,44 @@ A dynamic, JSON-driven onboarding SDK for iOS apps built with SwiftUI.
 
 #### Swift Package Manager
 
-Add this to your `Package.swift`:
+Add via Xcode:
+1. File → Add Package Dependencies
+2. Enter: `https://github.com/YOUR_USERNAME/onboarding-ios-sdk.git`
+3. Choose "Up to Next Major Version" starting from `1.0.0`
 
-```swift
-dependencies: [
-    .package(url: "https://github.com/your-org/onboarding-ios-sdk.git", from: "1.0.0")
-]
-```
+### 2. Add to Your Existing App
 
-Or add via Xcode:
-1. File → Add Packages
-2. Enter: `https://github.com/your-org/onboarding-ios-sdk.git`
-
-### 2. Basic Setup
+Add just 2 lines to your existing ContentView:
 
 ```swift
 import OnboardingSDK
-import SwiftUI
 
-// Configure the SDK
-OnboardingSDK.shared.configure(appID: "your_app_id")
-
-// Start onboarding
-OnboardingSDK.shared.startOnboarding(flowID: "welcome_flow_v1") { flow in
-    if let flow = flow {
-        // Present the onboarding view
-        self.presentOnboarding(flow: flow)
-    }
-}
-```
-
-### 3. Present Onboarding
-
-```swift
 struct ContentView: View {
+    @AppStorage("hasCompletedOnboarding") private var hasCompletedOnboarding = false
     @State private var showOnboarding = false
-    @State private var currentFlow: OnboardingFlow?
     
     var body: some View {
-        VStack {
-            Button("Start Onboarding") {
-                startOnboarding()
-            }
+        // YOUR EXISTING APP UI - NO CHANGES NEEDED
+        TabView {
+            HomeView()
+                .tabItem { Label("Home", systemImage: "house") }
+            ProfileView()
+                .tabItem { Label("Profile", systemImage: "person") }
+        }
+        // ✨ Just add these 2 modifiers
+        .onAppear {
+            if !hasCompletedOnboarding { showOnboarding = true }
         }
         .sheet(isPresented: $showOnboarding) {
-            if let flow = currentFlow {
-                OnboardingView(flow: flow) { results in
-                    handleOnboardingComplete(results: results)
-                    showOnboarding = false
-                }
+            DynamicOnboardingView(
+                appID: "your_app_id",
+                flowID: "fitness_onboarding_v1"
+            ) { results in
+                print("User data:", results)
+                hasCompletedOnboarding = true
+                showOnboarding = false
             }
         }
-    }
-    
-    private func startOnboarding() {
-        OnboardingSDK.shared.startOnboarding(flowID: "fitness_onboarding_v1") { flow in
-            if let flow = flow {
-                currentFlow = flow
-                showOnboarding = true
-            }
-        }
-    }
-    
-    private func handleOnboardingComplete(results: [String: Any]) {
-        // Handle user inputs
-        print("Onboarding completed with results:", results)
     }
 }
 ```
