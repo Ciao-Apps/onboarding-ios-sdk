@@ -5,15 +5,15 @@
   "globalTemplate": {
     "templateID": "playful",
     "name": "Playful",
-    "primaryColor": "#FF6B9D",
+    "primaryColor": "#41B4E0",
     "secondaryColor": "#FFD93D",
     "backgroundColor": "#FFF5F8",
     "textColor": "#2D1B4E",
     "cornerRadius": 24,
     "navigationStyle": "floating",
     "buttonStyle": {
-      "primaryBackgroundColor": "#FF6B9D",
-      "primaryTextColor": "#FFFFFF",
+      "primaryBackgroundColor": "#FFFFFF",
+      "primaryTextColor": "#000000",
       "borderRadius": 30,
       "height": 54
     },
