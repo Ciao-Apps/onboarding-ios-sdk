@@ -24,44 +24,43 @@
       "extraLarge": 44
     },
     "navigationLayout": {
-      "layoutID": "vibrant_nav",
-      "name": "Vibrant Fun",
-      "style": "floating",
+      "layoutID": "corporate_nav",
+      "name": "Corporate Professional",
+      "style": "classic",
       "progressIndicator": {
-        "type": "bubbles",
-        "position": "bottom",
-        "size": 12,
-        "spacing": 10
+        "type": "gradient",
+        "position": "top",
+        "height": 4
       },
       "backButton": {
-        "type": "circle",
-        "position": "floating_left",
-        "icon": "chevron.left",
-        "backgroundColor": "#FF6B9D",
+        "type": "rectangle",
+        "position": "bottom_leading",
+        "text": "Back",
+        "backgroundColor": "#8E8E93",
         "textColor": "#FFFFFF",
-        "size": 52,
-        "cornerRadius": 26,
-        "elevation": 4
+        "size": 44,
+        "cornerRadius": 8,
+        "elevation": 0
       },
       "nextButton": {
-        "type": "fab", 
-        "position": "floating_right",
-        "icon": "chevron.right",
-        "backgroundColor": "#FFD93D",
-        "textColor": "#2D1B4E",
-        "size": 52,
-        "cornerRadius": 26,
-        "elevation": 4
+        "type": "rectangle", 
+        "position": "bottom_trailing",
+        "text": "Continue",
+        "backgroundColor": "#007AFF",
+        "textColor": "#FFFFFF",
+        "size": 44,
+        "cornerRadius": 8,
+        "elevation": 0
       },
       "finishButton": {
-        "type": "pill",
+        "type": "rectangle",
         "position": "bottom_center",
-        "text": "Get Started",
-        "backgroundColor": "#FF6B9D",
+        "text": "Complete Setup",
+        "backgroundColor": "#007AFF",
         "textColor": "#FFFFFF",
-        "size": 52,
-        "cornerRadius": 26,
-        "elevation": 6
+        "size": 48,
+        "cornerRadius": 8,
+        "elevation": 0
       },
       "swipeGestures": true,
       "hapticFeedback": true,
