@@ -22,6 +22,49 @@
       "medium": 20,
       "large": 30,
       "extraLarge": 44
+    },
+    "navigationLayout": {
+      "layoutID": "minimal_nav",
+      "name": "Minimal Clean",
+      "style": "minimal",
+      "progressIndicator": {
+        "type": "stepCounter",
+        "position": "top",
+        "showStepCounter": true
+      },
+      "backButton": {
+        "type": "text",
+        "position": "bottomLeading",
+        "text": "← Back",
+        "backgroundColor": "#TRANSPARENT",
+        "textColor": "#000000",
+        "cornerRadius": 0
+      },
+      "nextButton": {
+        "type": "text", 
+        "position": "bottomTrailing",
+        "text": "Next →",
+        "backgroundColor": "#TRANSPARENT",
+        "textColor": "#000000",
+        "cornerRadius": 0
+      },
+      "finishButton": {
+        "type": "rectangle",
+        "position": "bottomCenter",
+        "text": "Get Started",
+        "backgroundColor": "#000000",
+        "textColor": "#FFFFFF",
+        "size": 48,
+        "cornerRadius": 8
+      },
+      "swipeGestures": true,
+      "hapticFeedback": true,
+      "contentPadding": {
+        "top": 20,
+        "bottom": 100,
+        "leading": 24,
+        "trailing": 24
+      }
     }
   },
   "pages": [
