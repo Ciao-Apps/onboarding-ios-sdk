@@ -21,9 +21,9 @@ let package = Package(
         .target(
             name: "OnboardingSDK",
             dependencies: [],
-            path: "Sources",
+            path: "Sources/OnboardingSDK",
             resources: [
-                .process("resources")
+                .process("Resources")
             ]),
     ]
 )

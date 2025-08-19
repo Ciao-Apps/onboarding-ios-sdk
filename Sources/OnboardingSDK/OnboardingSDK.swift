@@ -32,32 +32,33 @@ public class OnboardingSDK: ObservableObject {
     
     // MARK: - JSON Loading (Database Simulation)
     private func loadFlowFromJSON(flowID: String) -> OnboardingFlow? {
-        // Try multiple bundle loading approaches for Swift Package Manager
         let bundle = Bundle.module
         
-        // Try different resource paths
-        let possiblePaths = [
-            bundle.url(forResource: flowID, withExtension: "json", subdirectory: "resources"),
-            bundle.url(forResource: flowID, withExtension: "json"),
-            bundle.url(forResource: "resources/\(flowID)", withExtension: "json")
-        ]
-        
-        guard let url = possiblePaths.compactMap({ $0 }).first else {
+        // Look for JSON file in Resources folder
+        guard let url = bundle.url(forResource: flowID, withExtension: "json", subdirectory: "Resources") else {
             print("OnboardingSDK: ❌ No JSON file found for flowID: \(flowID)")
             print("OnboardingSDK: Bundle path: \(bundle.bundlePath)")
-            print("OnboardingSDK: Bundle resources: \(bundle.urls(forResourcesWithExtension: "json", subdirectory: nil) ?? [])")
             
-            // Fallback: Return a basic flow structure to avoid crashes
+            // List all available resources for debugging
+            if let allJsonFiles = bundle.urls(forResourcesWithExtension: "json", subdirectory: nil) {
+                print("OnboardingSDK: Available JSON files: \(allJsonFiles.map { $0.lastPathComponent })")
+            }
+            
+            // Use fallback only if JSON file is missing
+            print("OnboardingSDK: 🔄 Using fallback flow instead of JSON")
             return createFallbackFlow(flowID: flowID)
         }
         
         do {
             let data = try Data(contentsOf: url)
             let jsonFlow = try JSONDecoder().decode(OnboardingFlow.self, from: data)
-            print("OnboardingSDK: ✅ Loaded flow '\(flowID)' from JSON file at: \(url.path)")
+            print("OnboardingSDK: ✅ Successfully loaded flow '\(flowID)' from JSON file")
+            print("OnboardingSDK: JSON path: \(url.path)")
             return jsonFlow
         } catch {
-            print("OnboardingSDK: ❌ Failed to decode JSON for flowID: \(flowID), error: \(error)")
+            print("OnboardingSDK: ❌ Failed to decode JSON for flowID: \(flowID)")
+            print("OnboardingSDK: Error: \(error)")
+            print("OnboardingSDK: 🔄 Using fallback flow instead")
             return createFallbackFlow(flowID: flowID)
         }
     }
