@@ -112,6 +112,11 @@ public struct OnboardingView: View {
                         }
                     )
                 )
+                
+            case .template:
+                // For now, fall back to text_image for template pages
+                // TODO: Implement custom template rendering system
+                TextImagePageView(page: page)
             }
         }
     }

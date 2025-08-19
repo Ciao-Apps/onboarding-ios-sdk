@@ -1,6 +1,7 @@
 # OnboardingSDK
 
 A dynamic, JSON-driven onboarding SDK for iOS apps built with SwiftUI.
+Version 0.0.1
 
 ## Features
 
