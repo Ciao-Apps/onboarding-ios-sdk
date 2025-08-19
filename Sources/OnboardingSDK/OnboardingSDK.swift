@@ -68,6 +68,10 @@ public class OnboardingSDK: ObservableObject {
             let jsonFlow = try JSONDecoder().decode(OnboardingFlow.self, from: data)
             print("OnboardingSDK: ✅ Successfully loaded flow '\(flowID)' from JSON file")
             print("OnboardingSDK: JSON path: \(url.path)")
+            
+            // Preload images for better performance
+            ImageCache.shared.preloadImages(for: jsonFlow)
+            
             return jsonFlow
         } catch {
             print("OnboardingSDK: ❌ Failed to decode JSON for flowID: \(flowID)")
@@ -193,6 +197,12 @@ public class OnboardingSDK: ObservableObject {
         // Simulate network delay
         DispatchQueue.global().asyncAfter(deadline: .now() + 1.0) {
             let flow = self.loadFlowFromJSON(flowID: flowID)
+            
+            // Preload images if flow loaded successfully
+            if let flow = flow {
+                ImageCache.shared.preloadImages(for: flow)
+            }
+            
             DispatchQueue.main.async {
                 completion(flow)
             }
@@ -204,6 +214,10 @@ public class OnboardingSDK: ObservableObject {
         do {
             let flow = try JSONDecoder().decode(OnboardingFlow.self, from: jsonData)
             print("OnboardingSDK: ✅ Loaded flow from custom JSON data")
+            
+            // Preload images for better performance
+            ImageCache.shared.preloadImages(for: flow)
+            
             return flow
         } catch {
             print("OnboardingSDK: ❌ Failed to decode JSON data: \(error)")
@@ -260,5 +274,12 @@ public class OnboardingSDK: ObservableObject {
     
     public func getFlowInfo(flowID: String) -> OnboardingFlow? {
         return loadFlowFromJSON(flowID: flowID)
+    }
+    
+    // MARK: - Cache Management
+    
+    /// Clear image cache to free up storage space
+    public func clearImageCache() {
+        ImageCache.shared.clearCache()
     }
 }

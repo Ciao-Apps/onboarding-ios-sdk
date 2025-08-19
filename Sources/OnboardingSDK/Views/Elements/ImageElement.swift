@@ -16,7 +16,7 @@ struct ImageElement: View {
     
     var body: some View {
         if let imageURL = page.imageURL {
-            AsyncImage(url: URL(string: imageURL)) { image in
+            CachedAsyncImage(url: URL(string: imageURL)) { image in
                 image
                     .resizable()
                     .aspectRatio(contentMode: imageContentMode)
