@@ -1,0 +1,86 @@
+{
+  "flowID": "bubulab_enhanced_v1",
+  "appID": "bubulab_app", 
+  "version": "2.0",
+  "pages": [
+    {
+      "id": "hero_welcome",
+      "type": "text_image",
+      "title": "Welcome to Bubulab! 🧸",
+      "subtitle": "Your ultimate Labubu collection companion",
+      "imageURL": "https://via.placeholder.com/400x300/FFB6C1/FFFFFF?text=Labubu",
+      "style": {
+        "template": "hero",
+        "titleColor": "#FFFFFF",
+        "subtitleColor": "#E0E0E0", 
+        "titleFontSize": 32,
+        "subtitleFontSize": 18,
+        "backgroundColor": "#FF6B9D",
+        "contentAlignment": "center",
+        "imagePosition": "background",
+        "imageSize": {
+          "width": 400,
+          "height": 300,
+          "aspectRatio": 1.33
+        },
+        "padding": {
+          "top": 60,
+          "bottom": 40,
+          "leading": 20,
+          "trailing": 20
+        },
+        "spacing": 24
+      }
+    },
+    {
+      "id": "experience_card",
+      "type": "selector",
+      "title": "How experienced are you?",
+      "key": "experience_level",
+      "options": [
+        "Just starting out 🌱",
+        "Collecting for a while 📚", 
+        "Experienced collector 🏆",
+        "Expert/Trader 💎"
+      ],
+      "style": {
+        "template": "card",
+        "titleColor": "#1D1D1F",
+        "titleFontSize": 24,
+        "backgroundColor": "#FFFFFF",
+        "contentAlignment": "top",
+        "padding": {
+          "top": 40,
+          "bottom": 30,
+          "leading": 20,
+          "trailing": 20
+        },
+        "spacing": 20
+      }
+    },
+    {
+      "id": "budget_creative", 
+      "type": "slider",
+      "title": "Monthly Budget",
+      "subtitle": "Slide to set your comfort zone",
+      "key": "monthly_budget",
+      "min": 0,
+      "max": 500,
+      "step": 25,
+      "style": {
+        "template": "creative_slider",
+        "titleColor": "#2E7D32",
+        "subtitleColor": "#66BB6A",
+        "titleFontSize": 28,
+        "backgroundColor": "#E8F5E8",
+        "contentAlignment": "center",
+        "imagePosition": "leading",
+        "imageSize": {
+          "width": 80,
+          "height": 80
+        },
+        "spacing": 30
+      }
+    }
+  ]
+}

@@ -72,6 +72,7 @@ public enum OnboardingPageType: String, Codable, CaseIterable {
     case input = "input"
     case selector = "selector"
     case slider = "slider"
+    case template = "template"  // For custom templates
 }
 
 public enum InputType: String, Codable {
@@ -83,24 +84,94 @@ public enum InputType: String, Codable {
 
 // MARK: - Style Configuration
 public struct PageStyle: Codable {
+    // Text Colors & Fonts
     public let titleColor: String?
     public let subtitleColor: String?
-    public let backgroundColor: String?
     public let titleFont: String?
     public let subtitleFont: String?
+    public let titleFontSize: Double?
+    public let subtitleFontSize: Double?
+    
+    // Layout & Positioning
+    public let backgroundColor: String?
+    public let contentAlignment: ContentAlignment?
+    public let imagePosition: ImagePosition?
+    public let imageSize: ImageSize?
+    public let spacing: Double?
+    public let padding: EdgePadding?
+    
+    // Template Override
+    public let template: String?
     
     public init(
         titleColor: String? = nil,
         subtitleColor: String? = nil,
-        backgroundColor: String? = nil,
         titleFont: String? = nil,
-        subtitleFont: String? = nil
+        subtitleFont: String? = nil,
+        titleFontSize: Double? = nil,
+        subtitleFontSize: Double? = nil,
+        backgroundColor: String? = nil,
+        contentAlignment: ContentAlignment? = nil,
+        imagePosition: ImagePosition? = nil,
+        imageSize: ImageSize? = nil,
+        spacing: Double? = nil,
+        padding: EdgePadding? = nil,
+        template: String? = nil
     ) {
         self.titleColor = titleColor
         self.subtitleColor = subtitleColor
-        self.backgroundColor = backgroundColor
         self.titleFont = titleFont
         self.subtitleFont = subtitleFont
+        self.titleFontSize = titleFontSize
+        self.subtitleFontSize = subtitleFontSize
+        self.backgroundColor = backgroundColor
+        self.contentAlignment = contentAlignment
+        self.imagePosition = imagePosition
+        self.imageSize = imageSize
+        self.spacing = spacing
+        self.padding = padding
+        self.template = template
+    }
+}
+
+// MARK: - Layout Enums
+public enum ContentAlignment: String, Codable {
+    case top = "top"
+    case center = "center"
+    case bottom = "bottom"
+}
+
+public enum ImagePosition: String, Codable {
+    case top = "top"
+    case bottom = "bottom"
+    case leading = "leading"
+    case trailing = "trailing"
+    case background = "background"
+}
+
+public struct ImageSize: Codable {
+    public let width: Double?
+    public let height: Double?
+    public let aspectRatio: Double?
+    
+    public init(width: Double? = nil, height: Double? = nil, aspectRatio: Double? = nil) {
+        self.width = width
+        self.height = height
+        self.aspectRatio = aspectRatio
+    }
+}
+
+public struct EdgePadding: Codable {
+    public let top: Double?
+    public let bottom: Double?
+    public let leading: Double?
+    public let trailing: Double?
+    
+    public init(top: Double? = nil, bottom: Double? = nil, leading: Double? = nil, trailing: Double? = nil) {
+        self.top = top
+        self.bottom = bottom
+        self.leading = leading
+        self.trailing = trailing
     }
 }
 
