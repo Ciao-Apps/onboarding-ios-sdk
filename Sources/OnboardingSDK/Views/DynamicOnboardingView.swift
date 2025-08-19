@@ -159,8 +159,8 @@ struct HeroContent: View {
     
     var body: some View {
         VStack(spacing: viewModel.extraLargeSpacing) {
-            if let imageURL = page.imageURL {
-                CachedAsyncImage(url: imageURL) { image in
+            if let imageURL = page.imageURL, let url = URL(string: imageURL) {
+                CachedAsyncImage(url: url) { image in
                     image
                         .resizable()
                         .aspectRatio(contentMode: .fit)
@@ -216,8 +216,8 @@ struct ContentPageContent: View {
                 }
             }
             
-            if let imageURL = page.imageURL {
-                CachedAsyncImage(url: imageURL) { image in
+            if let imageURL = page.imageURL, let url = URL(string: imageURL) {
+                CachedAsyncImage(url: url) { image in
                     image
                         .resizable()
                         .aspectRatio(contentMode: .fit)
@@ -268,8 +268,8 @@ struct FeatureContent: View {
     
     var body: some View {
         VStack(spacing: viewModel.largeSpacing) {
-            if let imageURL = page.imageURL {
-                CachedAsyncImage(url: imageURL) { image in
+            if let imageURL = page.imageURL, let url = URL(string: imageURL) {
+                CachedAsyncImage(url: url) { image in
                     image
                         .resizable()
                         .aspectRatio(contentMode: .fit)
@@ -309,8 +309,8 @@ struct CompletionContent: View {
         VStack(spacing: viewModel.extraLargeSpacing) {
             Spacer()
             
-            if let imageURL = page.imageURL {
-                CachedAsyncImage(url: imageURL) { image in
+            if let imageURL = page.imageURL, let url = URL(string: imageURL) {
+                CachedAsyncImage(url: url) { image in
                     image
                         .resizable()
                         .aspectRatio(contentMode: .fit)
