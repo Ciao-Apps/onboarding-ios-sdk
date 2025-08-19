@@ -28,13 +28,13 @@
       "name": "Minimal Clean",
       "style": "minimal",
       "progressIndicator": {
-        "type": "stepCounter",
+        "type": "step_counter",
         "position": "top",
         "showStepCounter": true
       },
       "backButton": {
         "type": "text",
-        "position": "bottomLeading",
+        "position": "bottom_leading",
         "text": "← Back",
         "backgroundColor": "#TRANSPARENT",
         "textColor": "#000000",
@@ -42,7 +42,7 @@
       },
       "nextButton": {
         "type": "text", 
-        "position": "bottomTrailing",
+        "position": "bottom_trailing",
         "text": "Next →",
         "backgroundColor": "#TRANSPARENT",
         "textColor": "#000000",
@@ -50,7 +50,7 @@
       },
       "finishButton": {
         "type": "rectangle",
-        "position": "bottomCenter",
+        "position": "bottom_center",
         "text": "Get Started",
         "backgroundColor": "#000000",
         "textColor": "#FFFFFF",
