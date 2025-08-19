@@ -19,12 +19,12 @@ A dynamic, JSON-driven onboarding SDK for iOS apps built with SwiftUI.
 
 Add via Xcode:
 1. File → Add Package Dependencies
-2. Enter: `https://github.com/YOUR_USERNAME/onboarding-ios-sdk.git`
+2. Enter: `https://github.com/Ciao-Apps/onboarding-ios-sdk.git`
 3. Choose "Up to Next Major Version" starting from `1.0.0`
 
-### 2. Add to Your Existing App
+### 2. Ultra-Lean Integration (Just 2 Lines!)
 
-Add just 2 lines to your existing ContentView:
+Add these 2 modifiers to your existing ContentView:
 
 ```swift
 import OnboardingSDK
@@ -34,7 +34,7 @@ struct ContentView: View {
     @State private var showOnboarding = false
     
     var body: some View {
-        // YOUR EXISTING APP UI - NO CHANGES NEEDED
+        // 🎯 YOUR EXISTING APP UI - NO CHANGES NEEDED
         TabView {
             HomeView()
                 .tabItem { Label("Home", systemImage: "house") }
@@ -47,8 +47,8 @@ struct ContentView: View {
         }
         .sheet(isPresented: $showOnboarding) {
             DynamicOnboardingView(
-                appID: "your_app_id",
-                flowID: "fitness_onboarding_v1"
+                appID: "bubulab_app",
+                flowID: "bubulab_onboarding_v1"  // Loads from JSON file
             ) { results in
                 print("User data:", results)
                 hasCompletedOnboarding = true
@@ -56,6 +56,35 @@ struct ContentView: View {
             }
         }
     }
+}
+```
+
+**That's it!** Your app now shows onboarding for first-time users.
+
+### 3. Alternative Display Options
+
+**Fullscreen Cover (blocks everything until complete):**
+```swift
+.fullScreenCover(isPresented: .constant(!hasCompletedOnboarding)) {
+    DynamicOnboardingView(appID: "your_app", flowID: "your_flow") { _ in
+        hasCompletedOnboarding = true
+    }
+}
+```
+
+**Manual Trigger (show anytime):**
+```swift
+Button("Show Onboarding") {
+    showOnboarding = true
+}
+```
+
+### 4. Testing
+
+Reset onboarding anytime:
+```swift
+Button("Reset Onboarding") {
+    hasCompletedOnboarding = false
 }
 ```
 
@@ -176,19 +205,23 @@ Customize appearance via JSON:
 }
 ```
 
-## Demo App
+## Available Flows
 
-Run the included demo app to see the SDK in action:
+The SDK loads flows from JSON files (simulating database):
+- `"bubulab_onboarding_v1"` - Labubu collection experience (6 pages)
 
-```bash
-cd DemoApp
-open OnboardingSDKDemo.xcodeproj
+### User Data Structure
+
+The completion handler returns user inputs:
+```swift
+[
+    "experience_level": "Just starting out 🌱",
+    "collection_goal": "Complete specific series", 
+    "monthly_budget": 150.0,
+    "notification_preferences": "New releases & restocks",
+    "family_name": "The Bubu Squad"
+]
 ```
-
-The demo includes example flows for:
-- 🏃‍♂️ Fitness Tracker App
-- 🛒 E-commerce Shop
-- 🏦 Banking Application
 
 ## Advanced Usage
 
@@ -224,17 +257,22 @@ OnboardingView(flow: customFlow) { results in
 ## Architecture
 
 ```
-OnboardingSDK/
-├── Models/
-│   └── OnboardingModels.swift      # Data models
-├── Views/
-│   └── OnboardingView.swift        # SwiftUI components
-├── OnboardingSDK.swift             # Main SDK class
-└── Resources/
-    ├── fitness_onboarding_v1.json
-    ├── ecommerce_onboarding_v1.json
-    └── banking_onboarding_v1.json
+Sources/
+├── OnboardingSDK/
+│   ├── Models/
+│   │   └── OnboardingModels.swift      # Data models
+│   ├── Views/
+│   │   ├── DynamicOnboardingView.swift # Main entry point
+│   │   └── OnboardingView.swift        # UI components
+│   └── OnboardingSDK.swift             # SDK manager
+└── resources/
+    └── bubulab_onboarding_v1.json      # JSON flow definition
 ```
+
+### Key Components:
+- **DynamicOnboardingView** - Drop-in component that loads flows from JSON
+- **OnboardingSDK** - Manages flow loading and user data
+- **JSON files** - Define onboarding flows (simulates database)
 
 ## Requirements
 
