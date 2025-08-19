@@ -171,8 +171,103 @@ public class OnboardingSDK: ObservableObject {
             ]
         )
         
+        // Bubulab App Onboarding
+        let bubulabFlow = OnboardingFlow(
+            flowID: "bubulab_onboarding_v1",
+            appID: appID ?? "",
+            version: "1.0",
+            pages: [
+                OnboardingPage(
+                    id: "welcome",
+                    type: .textImage,
+                    title: "Welcome to Bubulab! 🧸",
+                    subtitle: "Your ultimate Labubu collection companion",
+                    imageURL: "https://via.placeholder.com/300x200/FFB6C1/FFFFFF?text=Labubu",
+                    style: PageStyle(
+                        titleColor: "#1D1D1F",
+                        subtitleColor: "#6E6E73",
+                        backgroundColor: "#FFFFFF"
+                    )
+                ),
+                OnboardingPage(
+                    id: "collection_experience",
+                    type: .selector,
+                    title: "How experienced are you with Labubu collecting?",
+                    key: "experience_level",
+                    options: [
+                        "Just starting out 🌱",
+                        "Collecting for a while 📚",
+                        "Experienced collector 🏆",
+                        "Expert/Trader 💎"
+                    ]
+                ),
+                OnboardingPage(
+                    id: "collection_goal", 
+                    type: .selector,
+                    title: "What's your main collecting goal?",
+                    key: "collection_goal",
+                    options: [
+                        "Complete specific series",
+                        "Collect rare pieces", 
+                        "Track collection value",
+                        "Share with community",
+                        "Investment purposes"
+                    ]
+                ),
+                OnboardingPage(
+                    id: "budget_range",
+                    type: .slider,
+                    title: "What's your monthly collecting budget?",
+                    subtitle: "This helps us show relevant items",
+                    key: "monthly_budget",
+                    min: 0,
+                    max: 500,
+                    step: 25
+                ),
+                OnboardingPage(
+                    id: "notifications",
+                    type: .selector,
+                    title: "How would you like to stay updated?",
+                    key: "notification_preferences",
+                    options: [
+                        "New releases & restocks",
+                        "Price alerts only",
+                        "Community updates", 
+                        "All notifications",
+                        "No notifications"
+                    ]
+                ),
+                OnboardingPage(
+                    id: "family_name",
+                    type: .input,
+                    title: "What should we call your collection family?",
+                    subtitle: "Give your Labubu family a special name!",
+                    placeholder: "e.g., The Bubu Squad",
+                    inputType: .text,
+                    key: "family_name"
+                ),
+                OnboardingPage(
+                    id: "completion",
+                    type: .textImage,
+                    title: "You're all set! 🎉",
+                    subtitle: "Let's start building your amazing Labubu collection together",
+                    imageURL: "https://via.placeholder.com/300x200/98FB98/FFFFFF?text=Ready!",
+                    button: ButtonConfig(
+                        title: "Start Collecting",
+                        action: "finish",
+                        style: ButtonStyle(
+                            backgroundColor: "#007AFF",
+                            textColor: "#FFFFFF",
+                            cornerRadius: 25
+                        )
+                    )
+                )
+            ]
+        )
+        
         flows["fitness_onboarding_v1"] = fitnessFlow
         flows["ecommerce_onboarding_v1"] = ecommerceFlow
+        flows["bubulab_onboarding_v1"] = bubulabFlow
     }
     
     // MARK: - Analytics
