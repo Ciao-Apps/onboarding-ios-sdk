@@ -12,10 +12,10 @@
     "cornerRadius": 24,
     "navigationStyle": "floating",
     "buttonStyle": {
-      "primaryBackgroundColor": "#000000",
+      "primaryBackgroundColor": "#FF6B9D",
       "primaryTextColor": "#FFFFFF",
-      "borderRadius": 8,
-      "height": 48
+      "borderRadius": 26,
+      "height": 52
     },
     "spacing": {
       "small": 12,
@@ -26,7 +26,7 @@
     "navigationLayout": {
       "layoutID": "vibrant_nav",
       "name": "Vibrant Fun",
-      "style": "vibrant",
+      "style": "floating",
       "progressIndicator": {
         "type": "bubbles",
         "position": "bottom",
