@@ -97,10 +97,10 @@
       "imageURL": "https://images.unsplash.com/photo-1607863680198-23d4b2565df0?w=200",
       "style": {
         "template": "creative_slider",
-        "titleColor": "#2E7D32",
-        "subtitleColor": "#66BB6A",
+        "titleColor": "#FFFFFF",
+        "subtitleColor": "#E3F2FD",
         "titleFontSize": 28,
-        "backgroundColor": "#E8F5E8",
+        "backgroundColor": "#2196F3",
         "contentAlignment": "center",
         "imagePosition": "leading",
         "imageSize": {

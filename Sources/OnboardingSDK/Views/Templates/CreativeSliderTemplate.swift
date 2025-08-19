@@ -143,7 +143,7 @@ struct CreativeSliderElement: View {
                     in: (page.min ?? 0)...(page.max ?? 500),
                     step: page.step ?? 25
                 )
-                .accentColor(.green)
+                .accentColor(sliderAccentColor)
                 
                 // Range labels
                 HStack {
@@ -172,13 +172,13 @@ struct CreativeSliderElement: View {
                                 .font(.title3)
                             Text(range.label)
                                 .font(.caption2)
-                                .foregroundColor(value == range.value ? .green : .secondary)
+                                .foregroundColor(value == range.value ? accentColor : .secondary)
                         }
                         .padding(.horizontal, 12)
                         .padding(.vertical, 8)
                         .background(
                             RoundedRectangle(cornerRadius: 8)
-                                .fill(value == range.value ? Color.green.opacity(0.1) : Color.clear)
+                                .fill(value == range.value ? accentColor.opacity(0.2) : Color.white.opacity(0.1))
                         )
                     }
                     .buttonStyle(PlainButtonStyle())
@@ -194,5 +194,21 @@ struct CreativeSliderElement: View {
             ("🎯", "Focused", 250),
             ("💎", "Collector", page.max ?? 500)
         ]
+    }
+    
+    private var accentColor: Color {
+        // Use white for colored backgrounds, or extract from style
+        if backgroundColor != Color(.systemBackground) {
+            return .white
+        }
+        return .green
+    }
+    
+    private var sliderAccentColor: Color {
+        return accentColor
+    }
+    
+    private var backgroundColor: Color {
+        Color(hex: page.style?.backgroundColor) ?? Color(.systemBackground)
     }
 }

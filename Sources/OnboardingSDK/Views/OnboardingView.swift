@@ -59,7 +59,8 @@ public struct OnboardingView: View {
             .padding(.horizontal, 24)
             .padding(.bottom, 34)
         }
-        .background(Color(.systemBackground))
+        .background(currentPageBackgroundColor)
+        .animation(.easeInOut(duration: 0.3), value: currentPageBackgroundColor)
     }
     
     @ViewBuilder
@@ -95,6 +96,14 @@ public struct OnboardingView: View {
         sdk.finishOnboarding { finalInputs in
             onCompletion(finalInputs.isEmpty ? userInputs : finalInputs)
         }
+    }
+    
+    private var currentPageBackgroundColor: Color {
+        let page = flow.pages[currentPageIndex]
+        if let bgColor = page.style?.backgroundColor {
+            return Color(hex: bgColor) ?? Color(.systemBackground)
+        }
+        return Color(.systemBackground)
     }
 }
 
