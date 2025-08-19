@@ -840,12 +840,27 @@ struct EnhancedButtonStyle: ButtonStyle {
     @ObservedObject var viewModel: EnhancedOnboardingViewModel
     
     func makeBody(configuration: Configuration) -> some View {
-        configuration.label
-            .background(backgroundForType)
-            .clipShape(shapeForType)
-            .shadow(radius: config.elevation ?? 0)
-            .scaleEffect(configuration.isPressed ? 0.95 : 1.0)
-            .animation(.easeInOut(duration: 0.1), value: configuration.isPressed)
+        Group {
+            switch config.type {
+            case .circle, .fab:
+                configuration.label
+                    .background(backgroundForType)
+                    .clipShape(Circle())
+                    .shadow(radius: config.elevation ?? 0)
+                    
+            case .pill, .rectangle:
+                configuration.label
+                    .background(backgroundForType)
+                    .clipShape(RoundedRectangle(cornerRadius: config.cornerRadius ?? 8))
+                    .shadow(radius: config.elevation ?? 0)
+                    
+            case .text, .invisible:
+                configuration.label
+                    .background(backgroundForType)
+            }
+        }
+        .scaleEffect(configuration.isPressed ? 0.95 : 1.0)
+        .animation(.easeInOut(duration: 0.1), value: configuration.isPressed)
     }
     
     @ViewBuilder
@@ -868,18 +883,6 @@ struct EnhancedButtonStyle: ButtonStyle {
                 
         case .text, .invisible:
             Color.clear
-        }
-    }
-    
-    @ViewBuilder
-    private var shapeForType: some Shape {
-        switch config.type {
-        case .circle, .fab:
-            Circle()
-        case .pill, .rectangle:
-            RoundedRectangle(cornerRadius: config.cornerRadius ?? 8)
-        case .text, .invisible:
-            Rectangle()
         }
     }
 }
