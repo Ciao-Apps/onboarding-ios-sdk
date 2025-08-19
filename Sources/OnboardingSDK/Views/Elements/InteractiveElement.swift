@@ -90,20 +90,23 @@ struct InputElement: View {
     let style: InteractiveElement.InteractiveStyle
     
     var body: some View {
-        TextField(page.placeholder ?? "", text: $value)
-            .textFieldStyle(textFieldStyle)
-            .keyboardType(keyboardType)
-            .autocapitalization(.none)
-            .disableAutocorrection(true)
-            .font(inputFont)
-    }
-    
-    private var textFieldStyle: some TextFieldStyle {
-        switch style {
-        case .overlay:
-            return PlainTextFieldStyle()
-        default:
-            return RoundedBorderTextFieldStyle()
+        Group {
+            switch style {
+            case .overlay:
+                TextField(page.placeholder ?? "", text: $value)
+                    .textFieldStyle(PlainTextFieldStyle())
+                    .keyboardType(keyboardType)
+                    .autocapitalization(.none)
+                    .disableAutocorrection(true)
+                    .font(inputFont)
+            default:
+                TextField(page.placeholder ?? "", text: $value)
+                    .textFieldStyle(RoundedBorderTextFieldStyle())
+                    .keyboardType(keyboardType)
+                    .autocapitalization(.none)
+                    .disableAutocorrection(true)
+                    .font(inputFont)
+            }
         }
     }
     

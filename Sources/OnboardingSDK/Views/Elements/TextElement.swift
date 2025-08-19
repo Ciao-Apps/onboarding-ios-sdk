@@ -36,14 +36,14 @@ struct TextElement: View {
         VStack(spacing: textSpacing) {
             Text(page.title)
                 .font(titleFont)
-                .fontWeight(titleWeight)
+                .fontWeight(titleWeight.swiftUIWeight)
                 .multilineTextAlignment(swiftUIAlignment)
                 .foregroundColor(titleColor)
             
             if let subtitle = page.subtitle {
                 Text(subtitle)
                     .font(subtitleFont)
-                    .fontWeight(subtitleWeight)
+                    .fontWeight(subtitleWeight.swiftUIWeight)
                     .multilineTextAlignment(swiftUIAlignment)
                     .foregroundColor(subtitleColor)
             }
