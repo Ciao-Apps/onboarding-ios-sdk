@@ -59,19 +59,21 @@ public struct DynamicOnboardingView: View {
         // Configure SDK
         OnboardingSDK.shared.configure(appID: appID)
         
-        // Create ViewModel using enhanced system
-        if let vm = OnboardingSDK.shared.createViewModel(
-            flowID: flowID,
-            templateID: templateID,
-            onCompletion: onCompletion
-        ) {
-            self.viewModel = vm
-            self.isLoading = false
-            print("DynamicOnboardingView: ✅ Loaded enhanced flow with template: \(templateID ?? "default")")
-        } else {
-            self.errorMessage = "Failed to load onboarding flow"
-            self.isLoading = false
-            print("DynamicOnboardingView: ❌ Failed to load flow: \(flowID)")
+        // Create ViewModel using enhanced system (async MainActor call)
+        Task { @MainActor in
+            if let vm = OnboardingSDK.shared.createViewModel(
+                flowID: flowID,
+                templateID: templateID,
+                onCompletion: onCompletion
+            ) {
+                self.viewModel = vm
+                self.isLoading = false
+                print("DynamicOnboardingView: ✅ Loaded enhanced flow with template: \(templateID ?? "default")")
+            } else {
+                self.errorMessage = "Failed to load onboarding flow"
+                self.isLoading = false
+                print("DynamicOnboardingView: ❌ Failed to load flow: \(flowID)")
+            }
         }
     }
 }

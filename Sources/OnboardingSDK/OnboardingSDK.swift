@@ -174,6 +174,7 @@ public class OnboardingSDK: ObservableObject {
     }
     
     /// Create enhanced ViewModel for SwiftUI integration
+    @MainActor
     public func createViewModel(
         flowID: String,
         templateID: String? = nil,
