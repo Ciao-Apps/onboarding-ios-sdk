@@ -60,7 +60,7 @@ public class OnboardingSDK: ObservableObject {
         let bundle = Bundle.module
         
         // Try enhanced flow first (with _enhanced suffix)
-        let enhancedFlowID = "\(flowID)_enhanced_v1"
+        let enhancedFlowID = "\(flowID)"
         let possibleURLs = [
             bundle.url(forResource: enhancedFlowID, withExtension: "json", subdirectory: "Resources"),
             bundle.url(forResource: enhancedFlowID, withExtension: "json"), // Root level
