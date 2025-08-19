@@ -329,3 +329,47 @@ public enum PredefinedTemplates {
         modern, minimal, vibrant, corporate, playful
     ]
 }
+
+// MARK: - Missing Types for Compatibility
+
+/// Button configuration
+public struct ButtonConfig: Codable {
+    public let title: String
+    public let action: String
+    public let style: OnboardingButtonStyle?
+    
+    public init(title: String, action: String, style: OnboardingButtonStyle? = nil) {
+        self.title = title
+        self.action = action
+        self.style = style
+    }
+}
+
+/// Button styling
+public struct OnboardingButtonStyle: Codable {
+    public let backgroundColor: String?
+    public let textColor: String?
+    public let cornerRadius: Double?
+    
+    public init(backgroundColor: String? = nil, textColor: String? = nil, cornerRadius: Double? = nil) {
+        self.backgroundColor = backgroundColor
+        self.textColor = textColor
+        self.cornerRadius = cornerRadius
+    }
+}
+
+/// Content types (for backward compatibility in JSON)
+public enum OnboardingPageType: String, Codable, CaseIterable {
+    case textImage = "text_image"
+    case input = "input"
+    case selector = "selector"
+    case slider = "slider"
+}
+
+/// Input types
+public enum InputType: String, Codable {
+    case text = "text"
+    case number = "number"
+    case email = "email"
+    case password = "password"
+}

@@ -55,8 +55,8 @@ public class ImageCache: ObservableObject {
         downloadImage(from: urlString, completion: completion)
     }
     
-    /// Preload images for an onboarding flow
-    public func preloadImages(for flow: OnboardingFlow) {
+    /// Preload images for an enhanced onboarding flow
+    public func preloadImages(for flow: EnhancedOnboardingFlow) {
         let imageURLs = extractImageURLs(from: flow)
         
         print("OnboardingSDK: 🔄 Preloading \(imageURLs.count) images...")
@@ -77,6 +77,24 @@ public class ImageCache: ObservableObject {
         }
     }
     
+    /// Preload single image
+    public func preloadImage(from urlString: String) {
+        guard !urlString.isEmpty else { return }
+        
+        // Skip if already cached or downloading
+        if getCachedImage(for: urlString) != nil || activeDownloads.contains(urlString) {
+            return
+        }
+        
+        downloadQueue.async {
+            self.downloadImage(from: urlString) { image in
+                if image != nil {
+                    print("OnboardingSDK: ✅ Preloaded image: \(urlString)")
+                }
+            }
+        }
+    }
+    
     /// Clear all cached images
     public func clearCache() {
         cache.removeAllObjects()
@@ -87,7 +105,7 @@ public class ImageCache: ObservableObject {
     
     // MARK: - Private Methods
     
-    private func extractImageURLs(from flow: OnboardingFlow) -> [String] {
+    private func extractImageURLs(from flow: EnhancedOnboardingFlow) -> [String] {
         var urls: [String] = []
         
         for page in flow.pages {

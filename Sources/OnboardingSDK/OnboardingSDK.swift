@@ -283,18 +283,3 @@ public struct OnboardingUserInput {
     }
 }
 
-// MARK: - Content Types (for backward compatibility in JSON)
-
-public enum OnboardingPageType: String, Codable, CaseIterable {
-    case textImage = "text_image"
-    case input = "input"
-    case selector = "selector"
-    case slider = "slider"
-}
-
-public enum InputType: String, Codable {
-    case text = "text"
-    case number = "number"
-    case email = "email"
-    case password = "password"
-}
