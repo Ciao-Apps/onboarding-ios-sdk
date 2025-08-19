@@ -55,14 +55,29 @@ public struct DynamicOnboardingView: View {
         // Configure SDK
         OnboardingSDK.shared.configure(appID: appID)
         
-        // Load the flow
+        // 🎯 Try to fetch from "remote database" first (simulated)
+        OnboardingSDK.shared.fetchFlowFromRemote(flowID: flowID) { flow in
+            if let flow = flow {
+                self.currentFlow = flow
+                self.isLoading = false
+                print("DynamicOnboardingView: ✅ Loaded from remote database simulation")
+            } else {
+                // Fallback to normal loading
+                print("DynamicOnboardingView: Remote fetch failed, trying fallback...")
+                self.loadFromFallback()
+            }
+        }
+    }
+    
+    private func loadFromFallback() {
         OnboardingSDK.shared.startOnboarding(flowID: flowID) { flow in
             DispatchQueue.main.async {
-                isLoading = false
+                self.isLoading = false
                 if let flow = flow {
-                    currentFlow = flow
+                    self.currentFlow = flow
+                    print("DynamicOnboardingView: ✅ Loaded from fallback (hardcoded flows)")
                 } else {
-                    errorMessage = "Failed to load onboarding flow"
+                    self.errorMessage = "Failed to load onboarding flow from all sources"
                 }
             }
         }
