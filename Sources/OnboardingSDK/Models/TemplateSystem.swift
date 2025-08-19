@@ -373,3 +373,48 @@ public enum InputType: String, Codable {
     case email = "email"
     case password = "password"
 }
+
+// MARK: - Color Extension for Hex Support
+
+@available(iOS 15.0, *)
+extension Color {
+    /// Initialize Color from hex string
+    /// - Parameter hex: Hex color string (e.g., "#FF0000" or "FF0000")
+    /// - Returns: Color instance or nil if invalid hex
+    init?(hex: String) {
+        var hexString = hex.trimmingCharacters(in: .whitespacesAndNewlines)
+        
+        // Remove # if present
+        if hexString.hasPrefix("#") {
+            hexString.removeFirst()
+        }
+        
+        // Must be 6 characters (RGB) or 8 characters (RGBA)
+        guard hexString.count == 6 || hexString.count == 8 else {
+            return nil
+        }
+        
+        // Convert to integer
+        var rgbValue: UInt64 = 0
+        guard Scanner(string: hexString).scanHexInt64(&rgbValue) else {
+            return nil
+        }
+        
+        if hexString.count == 6 {
+            // RGB format
+            let red = Double((rgbValue & 0xFF0000) >> 16) / 255.0
+            let green = Double((rgbValue & 0x00FF00) >> 8) / 255.0
+            let blue = Double(rgbValue & 0x0000FF) / 255.0
+            
+            self.init(red: red, green: green, blue: blue)
+        } else {
+            // RGBA format
+            let red = Double((rgbValue & 0xFF000000) >> 24) / 255.0
+            let green = Double((rgbValue & 0x00FF0000) >> 16) / 255.0
+            let blue = Double((rgbValue & 0x0000FF00) >> 8) / 255.0
+            let alpha = Double(rgbValue & 0x000000FF) / 255.0
+            
+            self.init(red: red, green: green, blue: blue, opacity: alpha)
+        }
+    }
+}

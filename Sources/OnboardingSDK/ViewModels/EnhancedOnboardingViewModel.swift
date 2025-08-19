@@ -70,15 +70,24 @@ public class EnhancedOnboardingViewModel: ObservableObject {
     }
     
     public var templateBackgroundColor: Color {
-        Color(hex: template.backgroundColor) ?? Color(.systemBackground)
+        if let bgColor = template.backgroundColor {
+            return Color(hex: bgColor) ?? Color(.systemBackground)
+        }
+        return Color(.systemBackground)
     }
     
     public var templatePrimaryColor: Color {
-        Color(hex: template.primaryColor) ?? Color.blue
+        if let primaryColor = template.primaryColor {
+            return Color(hex: primaryColor) ?? Color.blue
+        }
+        return Color.blue
     }
     
     public var templateSecondaryColor: Color {
-        Color(hex: template.secondaryColor) ?? Color.gray
+        if let secondaryColor = template.secondaryColor {
+            return Color(hex: secondaryColor) ?? Color.gray
+        }
+        return Color.gray
     }
     
     public var templateTextColor: Color {
@@ -90,7 +99,10 @@ public class EnhancedOnboardingViewModel: ObservableObject {
     }
     
     private var defaultTemplateTextColor: Color {
-        Color(hex: template.textColor) ?? Color.primary
+        if let textColor = template.textColor {
+            return Color(hex: textColor) ?? Color.primary
+        }
+        return Color.primary
     }
     
     public var templateCornerRadius: CGFloat {
@@ -129,11 +141,17 @@ public class EnhancedOnboardingViewModel: ObservableObject {
     }
     
     private var defaultPrimaryButtonColor: Color {
-        Color(hex: template.buttonStyle?.primaryBackgroundColor) ?? templatePrimaryColor
+        if let buttonBgColor = template.buttonStyle?.primaryBackgroundColor {
+            return Color(hex: buttonBgColor) ?? templatePrimaryColor
+        }
+        return templatePrimaryColor
     }
     
     public var primaryButtonTextColor: Color {
-        Color(hex: template.buttonStyle?.primaryTextColor) ?? Color.white
+        if let buttonTextColor = template.buttonStyle?.primaryTextColor {
+            return Color(hex: buttonTextColor) ?? Color.white
+        }
+        return Color.white
     }
     
     public var buttonCornerRadius: CGFloat {
