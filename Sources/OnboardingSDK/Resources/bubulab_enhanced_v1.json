@@ -3,12 +3,12 @@
   "appID": "bubulab_app",
   "version": "2.0",
   "globalTemplate": {
-    "templateID": "vibrant",
-    "name": "Vibrant",
-    "primaryColor": "#FF6B9D",
-    "secondaryColor": "#FFD93D",
-    "backgroundColor": "#FFF5F8",
-    "textColor": "#2D1B4E",
+    "templateID": "corporate",
+    "name": "Corporate",
+    "primaryColor": "#007AFF",
+    "secondaryColor": "#8E8E93",
+    "backgroundColor": "#F2F2F7",
+    "textColor": "#1D1D1F",
     "cornerRadius": 24,
     "navigationStyle": "floating",
     "buttonStyle": {
