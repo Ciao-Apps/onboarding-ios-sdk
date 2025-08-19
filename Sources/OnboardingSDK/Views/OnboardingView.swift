@@ -39,7 +39,7 @@ public struct OnboardingView: View {
                             currentPageIndex -= 1
                         }
                     }
-                    .buttonStyle(SecondaryButtonStyle())
+                    .buttonStyle(OnboardingSecondaryButtonStyle())
                 }
                 
                 Spacer()
@@ -53,7 +53,7 @@ public struct OnboardingView: View {
                         }
                     }
                 }
-                .buttonStyle(PrimaryButtonStyle())
+                .buttonStyle(OnboardingPrimaryButtonStyle())
                 .disabled(!canProceed)
             }
             .padding(.horizontal, 24)
@@ -325,8 +325,8 @@ struct SliderPageView: View {
 // MARK: - Button Styles
 
 @available(iOS 15.0, *)
-struct PrimaryButtonStyle: ButtonStyle {
-    func makeBody(configuration: Configuration) -> some View {
+struct OnboardingPrimaryButtonStyle: SwiftUI.ButtonStyle {
+    func makeBody(configuration: SwiftUI.ButtonStyle.Configuration) -> some View {
         configuration.label
             .font(.headline)
             .foregroundColor(.white)
@@ -341,8 +341,8 @@ struct PrimaryButtonStyle: ButtonStyle {
 }
 
 @available(iOS 15.0, *)
-struct SecondaryButtonStyle: ButtonStyle {
-    func makeBody(configuration: Configuration) -> some View {
+struct OnboardingSecondaryButtonStyle: SwiftUI.ButtonStyle {
+    func makeBody(configuration: SwiftUI.ButtonStyle.Configuration) -> some View {
         configuration.label
             .font(.headline)
             .foregroundColor(.blue)

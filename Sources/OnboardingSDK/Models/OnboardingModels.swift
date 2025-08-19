@@ -108,16 +108,16 @@ public struct PageStyle: Codable {
 public struct ButtonConfig: Codable {
     public let title: String
     public let action: String
-    public let style: ButtonStyle?
+    public let style: OnboardingButtonStyle?
     
-    public init(title: String, action: String, style: ButtonStyle? = nil) {
+    public init(title: String, action: String, style: OnboardingButtonStyle? = nil) {
         self.title = title
         self.action = action
         self.style = style
     }
 }
 
-public struct ButtonStyle: Codable {
+public struct OnboardingButtonStyle: Codable {
     public let backgroundColor: String?
     public let textColor: String?
     public let cornerRadius: Double?

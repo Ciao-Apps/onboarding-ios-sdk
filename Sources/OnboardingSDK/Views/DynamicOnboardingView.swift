@@ -125,7 +125,7 @@ private struct ErrorView: View {
             Button("Try Again") {
                 onRetry()
             }
-            .buttonStyle(RetryButtonStyle())
+            .buttonStyle(OnboardingRetryButtonStyle())
         }
         .padding(.horizontal, 32)
         .frame(maxWidth: .infinity, maxHeight: .infinity)
@@ -134,8 +134,8 @@ private struct ErrorView: View {
 }
 
 @available(iOS 15.0, *)
-private struct RetryButtonStyle: ButtonStyle {
-    func makeBody(configuration: Configuration) -> some View {
+private struct OnboardingRetryButtonStyle: SwiftUI.ButtonStyle {
+    func makeBody(configuration: SwiftUI.ButtonStyle.Configuration) -> some View {
         configuration.label
             .font(.headline)
             .foregroundColor(.white)
