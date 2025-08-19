@@ -34,8 +34,22 @@ public class OnboardingSDK: ObservableObject {
     private func loadFlowFromJSON(flowID: String) -> OnboardingFlow? {
         let bundle = Bundle.module
         
-        // Look for JSON file in Resources folder
-        guard let url = bundle.url(forResource: flowID, withExtension: "json", subdirectory: "Resources") else {
+        // Try multiple paths to find the JSON file
+        let possibleURLs = [
+            bundle.url(forResource: flowID, withExtension: "json", subdirectory: "Resources"),
+            bundle.url(forResource: flowID, withExtension: "json"), // Root level
+        ]
+        
+        print("OnboardingSDK: 🔍 Searching for JSON file: \(flowID).json")
+        for (index, url) in possibleURLs.enumerated() {
+            if let url = url {
+                print("OnboardingSDK: Found at path \(index): \(url.path)")
+            } else {
+                print("OnboardingSDK: Path \(index) not found")
+            }
+        }
+        
+        guard let url = possibleURLs.compactMap({ $0 }).first else {
             print("OnboardingSDK: ❌ No JSON file found for flowID: \(flowID)")
             print("OnboardingSDK: Bundle path: \(bundle.bundlePath)")
             
