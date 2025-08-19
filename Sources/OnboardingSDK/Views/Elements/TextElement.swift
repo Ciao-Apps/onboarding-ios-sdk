@@ -5,7 +5,7 @@ import SwiftUI
 struct TextElement: View {
     let page: OnboardingPage
     let style: TextStyle
-    let alignment: TextAlignment
+    let alignment: TextElementAlignment
     
     enum TextStyle {
         case standard       // Regular page text
@@ -15,8 +15,21 @@ struct TextElement: View {
         case card          // Card template text
     }
     
-    enum TextAlignment {
+    enum TextElementAlignment {
         case leading, center, trailing
+    }
+    
+    enum FontWeight {
+        case regular, medium, semibold, bold
+        
+        var swiftUIWeight: Font.Weight {
+            switch self {
+            case .regular: return .regular
+            case .medium: return .medium
+            case .semibold: return .semibold
+            case .bold: return .bold
+            }
+        }
     }
     
     var body: some View {
@@ -123,20 +136,4 @@ struct TextElement: View {
         case .trailing: return .trailing
         }
     }
-}
-
-// MARK: - FontWeight Extension
-extension TextElement.FontWeight {
-    var swiftUIWeight: Font.Weight {
-        switch self {
-        case .regular: return .regular
-        case .medium: return .medium
-        case .semibold: return .semibold
-        case .bold: return .bold
-        }
-    }
-}
-
-enum FontWeight {
-    case regular, medium, semibold, bold
 }
