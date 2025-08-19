@@ -35,7 +35,7 @@
     {
       "id": "experience_card",
       "type": "selector",
-      "title": "How experienced are you?",
+      "title": "How experienced are you with Labubu collecting?",
       "key": "experience_level",
       "options": [
         "Just starting out 🌱",
@@ -59,6 +59,33 @@
       }
     },
     {
+      "id": "collection_goal",
+      "type": "selector",
+      "title": "What's your main collecting goal?",
+      "key": "collection_goal",
+      "options": [
+        "Complete specific series",
+        "Collect rare pieces",
+        "Track collection value",
+        "Share with community",
+        "Investment purposes"
+      ],
+      "style": {
+        "template": "fullwidth",
+        "titleColor": "#1D1D1F",
+        "titleFontSize": 26,
+        "backgroundColor": "#F8F9FA",
+        "contentAlignment": "center",
+        "padding": {
+          "top": 32,
+          "bottom": 32,
+          "leading": 20,
+          "trailing": 20
+        },
+        "spacing": 24
+      }
+    },
+    {
       "id": "budget_creative", 
       "type": "slider",
       "title": "Monthly Budget",
@@ -67,6 +94,7 @@
       "min": 0,
       "max": 500,
       "step": 25,
+      "imageURL": "https://images.unsplash.com/photo-1607863680198-23d4b2565df0?w=200",
       "style": {
         "template": "creative_slider",
         "titleColor": "#2E7D32",
@@ -80,6 +108,72 @@
           "height": 80
         },
         "spacing": 30
+      }
+    },
+    {
+      "id": "notifications",
+      "type": "selector", 
+      "title": "How would you like to stay updated?",
+      "key": "notification_preferences",
+      "options": [
+        "New releases & restocks",
+        "Price alerts only",
+        "Community updates",
+        "All notifications", 
+        "No notifications"
+      ],
+      "style": {
+        "template": "minimal",
+        "titleColor": "#1D1D1F",
+        "titleFontSize": 22,
+        "backgroundColor": "#FFFFFF",
+        "contentAlignment": "center",
+        "spacing": 20
+      }
+    },
+    {
+      "id": "family_name",
+      "type": "input",
+      "title": "What should we call your collection family?",
+      "subtitle": "Give your Labubu family a special name!",
+      "placeholder": "e.g., The Bubu Squad",
+      "inputType": "text",
+      "key": "family_name",
+      "style": {
+        "template": "split",
+        "titleColor": "#1D1D1F",
+        "subtitleColor": "#6E6E73",
+        "titleFontSize": 24,
+        "backgroundColor": "#FFFFFF",
+        "contentAlignment": "center",
+        "spacing": 20
+      }
+    },
+    {
+      "id": "completion",
+      "type": "text_image",
+      "title": "You're all set! 🎉",
+      "subtitle": "Let's start building your amazing Labubu collection together",
+      "imageURL": "https://images.unsplash.com/photo-1513475382585-d06e58bcb0e0?w=400",
+      "style": {
+        "template": "hero",
+        "titleColor": "#FFFFFF",
+        "subtitleColor": "#E0E0E0",
+        "titleFontSize": 34,
+        "subtitleFontSize": 18,
+        "backgroundColor": "#4CAF50",
+        "contentAlignment": "center",
+        "imagePosition": "background",
+        "spacing": 24
+      },
+      "button": {
+        "title": "Start Collecting",
+        "action": "finish",
+        "style": {
+          "backgroundColor": "#FFFFFF",
+          "textColor": "#4CAF50",
+          "cornerRadius": 25
+        }
       }
     }
   ]

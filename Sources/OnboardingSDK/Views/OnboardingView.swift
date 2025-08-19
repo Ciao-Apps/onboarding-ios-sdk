@@ -66,59 +66,14 @@ public struct OnboardingView: View {
     private func renderCurrentPage() -> some View {
         let page = flow.pages[currentPageIndex]
         
-        VStack(spacing: 24) {
-            switch page.type {
-            case .textImage:
-                TextImagePageView(page: page)
-                
-            case .input:
-                InputPageView(
-                    page: page,
-                    value: Binding(
-                        get: { userInputs[page.key ?? ""] as? String ?? "" },
-                        set: { newValue in
-                            if let key = page.key {
-                                userInputs[key] = newValue
-                                sdk.updateUserInput(key: key, value: newValue, pageID: page.id)
-                            }
-                        }
-                    )
-                )
-                
-            case .selector:
-                SelectorPageView(
-                    page: page,
-                    selectedValue: Binding(
-                        get: { userInputs[page.key ?? ""] as? String ?? page.options?.first ?? "" },
-                        set: { newValue in
-                            if let key = page.key {
-                                userInputs[key] = newValue
-                                sdk.updateUserInput(key: key, value: newValue, pageID: page.id)
-                            }
-                        }
-                    )
-                )
-                
-            case .slider:
-                SliderPageView(
-                    page: page,
-                    value: Binding(
-                        get: { userInputs[page.key ?? ""] as? Double ?? page.min ?? 0 },
-                        set: { newValue in
-                            if let key = page.key {
-                                userInputs[key] = newValue
-                                sdk.updateUserInput(key: key, value: newValue, pageID: page.id)
-                            }
-                        }
-                    )
-                )
-                
-            case .template:
-                // For now, fall back to text_image for template pages
-                // TODO: Implement custom template rendering system
-                TextImagePageView(page: page)
+        // Use the new template system!
+        TemplateRenderer(
+            page: page,
+            userInputs: $userInputs,
+            onInputChange: { key, value in
+                sdk.updateUserInput(key: key, value: value, pageID: page.id)
             }
-        }
+        )
     }
     
     private var isLastPage: Bool {
