@@ -109,10 +109,6 @@ public class EnhancedOnboardingViewModel: ObservableObject {
         CGFloat(template.cornerRadius ?? 12)
     }
     
-    public var navigationStyle: NavigationStyle {
-        template.navigationStyle ?? .classic
-    }
-    
     // MARK: - Spacing
     
     public var smallSpacing: CGFloat {
