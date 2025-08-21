@@ -94,7 +94,7 @@ struct OnboardingView: View {
                 ProgressView("Finishing up...")
                     .foregroundColor(viewModel.templateTextColor)
             } else {
-                NavigationRenderer(viewModel: viewModel)
+                PageRenderer(viewModel: viewModel)
             }
         }
     }
