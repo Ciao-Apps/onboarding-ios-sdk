@@ -22,31 +22,26 @@ struct CraftContentRenderer: View {
     @ObservedObject var viewModel: EnhancedOnboardingViewModel
     
     var body: some View {
-        GeometryReader { geometry in
-            if let craftData = parseCraftContent() {
-                CraftNodeRenderer(
-                    nodeData: craftData,
-                    rootNodeId: "ROOT",
-                    page: page,
-                    viewModel: viewModel
-                )
-                .frame(maxWidth: .infinity, maxHeight: .infinity)
-                .environment(\.craftGeometry, geometry)
-            } else {
-                // Fallback if Craft.js parsing fails
-                VStack {
-                    Image(systemName: "exclamationmark.triangle")
-                        .foregroundColor(.orange)
-                        .font(.title2)
-                    Text("Unable to render custom layout")
-                        .foregroundColor(.secondary)
-                        .font(.caption)
-                }
-                .frame(maxWidth: .infinity, maxHeight: .infinity)
-                .multilineTextAlignment(.center)
+        if let craftData = parseCraftContent() {
+            CraftNodeRenderer(
+                nodeData: craftData,
+                rootNodeId: "ROOT",
+                page: page,
+                viewModel: viewModel
+            )
+        } else {
+            // Fallback if Craft.js parsing fails
+            VStack {
+                Image(systemName: "exclamationmark.triangle")
+                    .foregroundColor(.orange)
+                    .font(.title2)
+                Text("Unable to render custom layout")
+                    .foregroundColor(.secondary)
+                    .font(.caption)
             }
+            .frame(maxWidth: .infinity, maxHeight: .infinity)
+            .multilineTextAlignment(.center)
         }
-        .frame(minHeight: 200) // Ensure minimum content height
     }
     
     private func parseCraftContent() -> [String: CraftNode]? {
@@ -81,10 +76,91 @@ struct CraftNodeRenderer: View {
     
     var body: some View {
         if let rootNode = nodeData[rootNodeId] {
-            renderNode(rootNode)
+            // Special handling for ROOT node - create layout with positioned elements
+            if rootNodeId == "ROOT" {
+                createRootLayout(rootNode)
+            } else {
+                renderNode(rootNode)
+            }
         } else {
             EmptyView()
         }
+    }
+    
+    @ViewBuilder
+    private func createRootLayout(_ rootNode: CraftNode) -> some View {
+        ZStack {
+            // Background layer - normal flow content
+            ScrollView {
+                VStack(spacing: CGFloat(viewModel.mediumSpacing)) {
+                    ForEach(rootNode.childNodes, id: \.self) { childId in
+                        if let childNode = nodeData[childId],
+                           !isPositioned(childNode) {
+                            CraftNodeRenderer(
+                                nodeData: nodeData,
+                                rootNodeId: childId,
+                                page: page,
+                                viewModel: viewModel
+                            )
+                        }
+                    }
+                }
+                .padding(.horizontal, viewModel.mediumSpacing)
+                .padding(.top, viewModel.largeSpacing)
+                .padding(.bottom, 100) // Space for bottom positioned elements
+            }
+            
+            // Positioned elements layer
+            ForEach(rootNode.childNodes, id: \.self) { childId in
+                if let childNode = nodeData[childId],
+                   isPositioned(childNode) {
+                    createPositionedElement(childNode, childId: childId)
+                }
+            }
+        }
+    }
+    
+    @ViewBuilder
+    private func createPositionedElement(_ node: CraftNode, childId: String) -> some View {
+        let position = getElementPosition(node)
+        
+        VStack {
+            if position == "bottom" {
+                Spacer()
+                CraftNodeRenderer(
+                    nodeData: nodeData,
+                    rootNodeId: childId,
+                    page: page,
+                    viewModel: viewModel
+                )
+            } else if position == "top" {
+                CraftNodeRenderer(
+                    nodeData: nodeData,
+                    rootNodeId: childId,
+                    page: page,
+                    viewModel: viewModel
+                )
+                Spacer()
+            } else {
+                Spacer()
+                CraftNodeRenderer(
+                    nodeData: nodeData,
+                    rootNodeId: childId,
+                    page: page,
+                    viewModel: viewModel
+                )
+                Spacer()
+            }
+        }
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
+    }
+    
+    private func isPositioned(_ node: CraftNode) -> Bool {
+        return node.props["pagePosition"] != nil
+    }
+    
+    private func getElementPosition(_ node: CraftNode) -> String {
+        return node.props["pagePosition"] as? String ?? "default"
     }
     
     @ViewBuilder
@@ -420,43 +496,39 @@ struct StackComponent: View {
     @ObservedObject var viewModel: EnhancedOnboardingViewModel
     
     var body: some View {
-        GeometryReader { geometry in
-            if direction == "horizontal" {
-                HStack(alignment: verticalAlignment, spacing: spacing) {
-                    ForEach(node.childNodes, id: \.self) { childId in
-                        if let childNode = nodeData[childId] {
-                            CraftNodeRenderer(
-                                nodeData: nodeData,
-                                rootNodeId: childId,
-                                page: page,
-                                viewModel: viewModel
-                            )
-                            .frame(maxWidth: childMaxWidth(geometry: geometry))
-                        }
+        if direction == "horizontal" {
+            HStack(alignment: verticalAlignment, spacing: spacing) {
+                ForEach(node.childNodes, id: \.self) { childId in
+                    if let childNode = nodeData[childId] {
+                        CraftNodeRenderer(
+                            nodeData: nodeData,
+                            rootNodeId: childId,
+                            page: page,
+                            viewModel: viewModel
+                        )
                     }
                 }
-                .frame(maxWidth: .infinity, alignment: Alignment(horizontal: horizontalAlignment, vertical: .center))
-                .padding(stackPadding)
-            } else {
-                VStack(alignment: horizontalAlignment, spacing: spacing) {
-                    ForEach(node.childNodes, id: \.self) { childId in
-                        if let childNode = nodeData[childId] {
-                            CraftNodeRenderer(
-                                nodeData: nodeData,
-                                rootNodeId: childId,
-                                page: page,
-                                viewModel: viewModel
-                            )
-                            .frame(maxWidth: .infinity)
-                        }
-                    }
-                }
-                .frame(maxWidth: .infinity, alignment: .leading)
-                .frame(minHeight: minHeight)
-                .padding(stackPadding)
             }
+            .frame(maxWidth: .infinity, alignment: Alignment(horizontal: horizontalAlignment, vertical: .center))
+            .frame(minHeight: minHeight)
+            .padding(stackPadding)
+        } else {
+            VStack(alignment: horizontalAlignment, spacing: spacing) {
+                ForEach(node.childNodes, id: \.self) { childId in
+                    if let childNode = nodeData[childId] {
+                        CraftNodeRenderer(
+                            nodeData: nodeData,
+                            rootNodeId: childId,
+                            page: page,
+                            viewModel: viewModel
+                        )
+                    }
+                }
+            }
+            .frame(maxWidth: .infinity, alignment: .leading)
+            .frame(minHeight: minHeight)
+            .padding(stackPadding)
         }
-        .frame(minHeight: direction == "horizontal" ? nil : minHeight)
     }
     
     private var direction: String {
@@ -497,16 +569,6 @@ struct StackComponent: View {
             )
         }
         return EdgeInsets()
-    }
-    
-    private func childMaxWidth(geometry: GeometryProxy) -> CGFloat? {
-        if direction == "horizontal" {
-            let availableWidth = geometry.size.width - stackPadding.leading - stackPadding.trailing
-            let totalSpacing = spacing * CGFloat(max(0, node.childNodes.count - 1))
-            let childWidth = (availableWidth - totalSpacing) / CGFloat(node.childNodes.count)
-            return max(0, childWidth)
-        }
-        return nil
     }
 }
 

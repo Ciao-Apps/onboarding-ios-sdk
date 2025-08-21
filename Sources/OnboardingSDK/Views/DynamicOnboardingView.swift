@@ -102,25 +102,28 @@ struct OnboardingView: View {
 
 
 
-/// Individual page renderer
+/// Individual page renderer with proper positioning support
 @available(iOS 15.0, *)
 struct PageView: View {
     let page: EnhancedOnboardingPage
     @ObservedObject var viewModel: EnhancedOnboardingViewModel
     
     var body: some View {
-        ScrollView {
-            VStack(spacing: viewModel.largeSpacing) {
-                // Check if Craft.js content exists and render it
-                if let craftContent = page.overrides?.craftContent, !craftContent.isEmpty {
-                    CraftContentRenderer(craftContent: craftContent, page: page, viewModel: viewModel)
-                } else {
-                    // Fallback to standard page rendering
-                    StandardPageContent(page: page, viewModel: viewModel)
+        GeometryReader { geometry in
+            // Check if Craft.js content exists and render it
+            if let craftContent = page.overrides?.craftContent, !craftContent.isEmpty {
+                CraftContentRenderer(craftContent: craftContent, page: page, viewModel: viewModel)
+                    .frame(width: geometry.size.width, height: geometry.size.height)
+            } else {
+                // Fallback to standard page rendering
+                ScrollView {
+                    VStack(spacing: viewModel.largeSpacing) {
+                        StandardPageContent(page: page, viewModel: viewModel)
+                    }
+                    .padding(.horizontal, viewModel.mediumSpacing)
+                    .padding(.top, viewModel.largeSpacing)
                 }
             }
-            .padding(.horizontal, viewModel.mediumSpacing)
-            .padding(.top, viewModel.largeSpacing)
         }
     }
 }
