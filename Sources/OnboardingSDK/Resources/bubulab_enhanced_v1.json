@@ -1,167 +1,73 @@
 {
   "flowID": "bubulab_enhanced_v1",
-  "appID": "bubulab_app",
-  "version": "2.0",
+  "appID": "bubulab_enhanced_v1",
+  "version": "1.0",
   "globalTemplate": {
-    "templateID": "corporate",
-    "name": "Corporate",
+    "templateID": "modern",
+    "name": "Modern",
     "primaryColor": "#007AFF",
-    "secondaryColor": "#8E8E93",
+    "secondaryColor": "#5856D6",
     "backgroundColor": "#F2F2F7",
-    "textColor": "#1D1D1F",
-    "cornerRadius": 24,
-    "navigationStyle": "floating",
+    "textColor": "#000000",
+    "cornerRadius": 26,
+    "navigationStyle": "modern",
     "buttonStyle": {
       "primaryBackgroundColor": "#007AFF",
       "primaryTextColor": "#FFFFFF",
-      "borderRadius": 8,
+      "borderRadius": 26,
       "height": 44
     },
     "spacing": {
-      "small": 12,
-      "medium": 20,
-      "large": 30,
-      "extraLarge": 44
-    },
-    "navigationLayout": {
-      "layoutID": "corporate_nav",
-      "name": "Corporate Professional",
-      "style": "classic",
-      "progressIndicator": {
-        "type": "gradient",
-        "position": "top",
-        "height": 4
-      },
-      "backButton": {
-        "type": "rectangle",
-        "position": "bottom_leading",
-        "text": "Back",
-        "backgroundColor": "#8E8E93",
-        "textColor": "#FFFFFF",
-        "size": 44,
-        "cornerRadius": 8,
-        "elevation": 0
-      },
-      "nextButton": {
-        "type": "rectangle", 
-        "position": "bottom_trailing",
-        "text": "Continue",
-        "backgroundColor": "#007AFF",
-        "textColor": "#FFFFFF",
-        "size": 44,
-        "cornerRadius": 8,
-        "elevation": 0
-      },
-      "finishButton": {
-        "type": "rectangle",
-        "position": "bottom_center",
-        "text": "Complete Setup",
-        "backgroundColor": "#007AFF",
-        "textColor": "#FFFFFF",
-        "size": 48,
-        "cornerRadius": 8,
-        "elevation": 0
-      },
-      "swipeGestures": true,
-      "hapticFeedback": true,
-      "contentPadding": {
-        "top": 20,
-        "bottom": 100,
-        "leading": 24,
-        "trailing": 24
-      }
+      "small": 8,
+      "medium": 16,
+      "large": 24,
+      "extraLarge": 32
     }
   },
   "pages": [
     {
-      "id": "hero_welcome",
-      "pageType": "hero",
+      "id": "a9ua6fq0t",
+      "pageType": "content",
       "contentType": "text_image",
-      "title": "Welcome to Bubulab! 🧸",
-      "subtitle": "Your ultimate Labubu collection companion",
-      "imageURL": "https://images.unsplash.com/photo-1755306064502-6df8d7ee33f7",
+      "title": "Welcome! 👋",
+      "subtitle": "Let's get you started with our amazing app",
       "overrides": {
-        "backgroundColor": "#FF6B9D",
-        "textColor": "#FFFFFF"
+        "craftContent": "{\"ROOT\":{\"type\":\"div\",\"isCanvas\":true,\"props\":{\"style\":{\"position\":\"relative\",\"width\":\"100%\",\"height\":\"100%\",\"padding\":\"16px\",\"display\":\"flex\",\"flexDirection\":\"column\",\"gap\":\"16px\",\"minHeight\":\"100%\"}},\"displayName\":\"div\",\"custom\":{\"displayName\":\"Canvas\"},\"hidden\":false,\"nodes\":[\"YNHAgjjnnf\",\"DcW2rzS8sS\",\"0UxOmK7WY5\"],\"linkedNodes\":{}},\"YNHAgjjnnf\":{\"type\":{\"resolvedName\":\"HeaderText\"},\"isCanvas\":false,\"props\":{\"text\":\"Welcome! 👋\",\"fontSize\":28,\"color\":\"#1D1D1F\",\"alignment\":\"center\",\"padding\":{\"top\":8,\"right\":16,\"bottom\":8,\"left\":16},\"margin\":{\"top\":0,\"right\":0,\"bottom\":0,\"left\":0}},\"displayName\":\"Header Text\",\"custom\":{},\"parent\":\"ROOT\",\"hidden\":false,\"nodes\":[],\"linkedNodes\":{}},\"DcW2rzS8sS\":{\"type\":{\"resolvedName\":\"BodyText\"},\"isCanvas\":false,\"props\":{\"text\":\"Let's get you started with our amazing app\",\"fontSize\":17,\"color\":\"#1D1D1F\",\"alignment\":\"center\",\"padding\":{\"top\":4,\"right\":16,\"bottom\":4,\"left\":16},\"margin\":{\"top\":0,\"right\":0,\"bottom\":0,\"left\":0}},\"displayName\":\"Body Text\",\"custom\":{},\"parent\":\"ROOT\",\"hidden\":false,\"nodes\":[],\"linkedNodes\":{}},\"8nwgV7GU70\":{\"type\":{\"resolvedName\":\"ButtonComponent\"},\"isCanvas\":false,\"props\":{\"text\":\"Continue\",\"backgroundColor\":\"#007AFF\",\"textColor\":\"#FFFFFF\"},\"displayName\":\"Button\",\"custom\":{},\"parent\":\"0UxOmK7WY5\",\"hidden\":false,\"nodes\":[],\"linkedNodes\":{}},\"0UxOmK7WY5\":{\"type\":{\"resolvedName\":\"Stack\"},\"isCanvas\":true,\"props\":{\"direction\":\"vertical\",\"spacing\":16,\"padding\":{\"top\":16,\"right\":16,\"bottom\":16,\"left\":16},\"margin\":{\"top\":0,\"right\":0,\"bottom\":0,\"left\":0},\"justifyContent\":\"flex-start\",\"alignItems\":\"stretch\",\"minHeight\":100,\"pagePosition\":\"bottom\"},\"displayName\":\"Stack Container\",\"custom\":{},\"parent\":\"ROOT\",\"hidden\":false,\"nodes\":[\"8nwgV7GU70\"],\"linkedNodes\":{}}}"
       }
     },
     {
-      "id": "experience_card",
+      "id": "lr1obxqrr",
       "pageType": "form",
       "contentType": "selector",
-      "title": "How experienced are you with Labubu collecting?",
-      "subtitle": "This helps us personalize your experience",
-      "key": "experience_level",
+      "title": "Set age",
+      "subtitle": "Select your interests and preferences",
+      "key": "user_choices",
+      "inputType": "selector",
       "options": [
-        "Just starting out 🌱",
-        "Collecting for a while 📚", 
-        "Experienced collector 🏆",
-        "Expert/Trader 💎"
-      ]
-    },
-    {
-      "id": "collection_goal",
-      "pageType": "content",
-      "contentType": "selector",
-      "title": "What's your main collecting goal?",
-      "subtitle": "We'll help you achieve it!",
-      "imageURL": "https://images.unsplash.com/photo-1513475382585-d06e58bcb0e0?w=400",
-      "key": "collection_goal",
-      "options": [
-        "Complete specific series",
-        "Collect rare pieces", 
-        "Track collection value",
-        "Share with community",
-        "Investment purposes"
-      ]
-    },
-    {
-      "id": "budget_creative",
-      "pageType": "form",
-      "contentType": "slider",
-      "title": "What's your monthly collecting budget?",
-      "subtitle": "This helps us show relevant items and deals",
-      "imageURL": "https://images.unsplash.com/photo-1607863680198-23d4b2565df0?w=200",
-      "key": "monthly_budget",
-      "min": 0,
-      "max": 500,
-      "step": 25,
+        "Option 1",
+        "Option 2",
+        "Option 3"
+      ],
       "overrides": {
-        "backgroundColor": "#2196F3",
-        "textColor": "#FFFFFF"
+        "craftContent": "{\"ROOT\":{\"type\":\"div\",\"isCanvas\":true,\"props\":{\"style\":{\"position\":\"relative\",\"width\":\"100%\",\"height\":\"100%\",\"padding\":\"16px\",\"display\":\"flex\",\"flexDirection\":\"column\",\"gap\":\"16px\",\"minHeight\":\"100%\"}},\"displayName\":\"div\",\"custom\":{\"displayName\":\"Canvas\"},\"hidden\":false,\"nodes\":[\"JeljABtJWh\",\"IQwR5rOEKm\",\"wpQo3cVnfl\",\"b1RNXfQNGq\"],\"linkedNodes\":{}},\"JeljABtJWh\":{\"type\":{\"resolvedName\":\"HeaderText\"},\"isCanvas\":false,\"props\":{\"text\":\"Set your age\",\"fontSize\":28,\"color\":\"#1D1D1F\",\"alignment\":\"center\",\"padding\":{\"top\":8,\"right\":16,\"bottom\":8,\"left\":16},\"margin\":{\"top\":0,\"right\":0,\"bottom\":0,\"left\":0}},\"displayName\":\"Header Text\",\"custom\":{},\"parent\":\"ROOT\",\"hidden\":false,\"nodes\":[],\"linkedNodes\":{}},\"IQwR5rOEKm\":{\"type\":{\"resolvedName\":\"BodyText\"},\"isCanvas\":false,\"props\":{\"text\":\"Select your interests and preferences\",\"fontSize\":17,\"color\":\"#1D1D1F\",\"alignment\":\"center\",\"padding\":{\"top\":4,\"right\":16,\"bottom\":4,\"left\":16},\"margin\":{\"top\":0,\"right\":0,\"bottom\":0,\"left\":0}},\"displayName\":\"Body Text\",\"custom\":{},\"parent\":\"ROOT\",\"hidden\":false,\"nodes\":[],\"linkedNodes\":{}},\"wpQo3cVnfl\":{\"type\":{\"resolvedName\":\"SelectorComponent\"},\"isCanvas\":false,\"props\":{\"options\":[\"Option 1\",\"Option 2\",\"Option 3\",\"New Option\"],\"multiSelect\":false,\"backgroundColor\":\"#FFFFFF\",\"textColor\":\"#374151\",\"borderColor\":\"#E5E7EB\"},\"displayName\":\"Selector\",\"custom\":{},\"parent\":\"ROOT\",\"hidden\":false,\"nodes\":[],\"linkedNodes\":{}},\"b1RNXfQNGq\":{\"type\":{\"resolvedName\":\"Stack\"},\"isCanvas\":true,\"props\":{\"direction\":\"vertical\",\"spacing\":16,\"padding\":{\"top\":16,\"right\":16,\"bottom\":16,\"left\":16},\"margin\":{\"top\":0,\"right\":0,\"bottom\":0,\"left\":0},\"justifyContent\":\"flex-start\",\"alignItems\":\"stretch\",\"minHeight\":100,\"pagePosition\":\"bottom\"},\"displayName\":\"Stack Container\",\"custom\":{},\"parent\":\"ROOT\",\"hidden\":false,\"nodes\":[\"2B2swF1LyR\"],\"linkedNodes\":{}},\"2B2swF1LyR\":{\"type\":{\"resolvedName\":\"ButtonComponent\"},\"isCanvas\":false,\"props\":{\"text\":\"Continue\",\"backgroundColor\":\"#007AFF\",\"textColor\":\"#FFFFFF\"},\"displayName\":\"Button\",\"custom\":{},\"parent\":\"b1RNXfQNGq\",\"hidden\":false,\"nodes\":[],\"linkedNodes\":{}}}"
       }
     },
     {
-      "id": "notifications",
-      "pageType": "content",
-      "contentType": "selector",
-      "title": "How would you like to stay updated?",
-      "subtitle": "Choose your notification preferences",
-      "key": "notification_preferences",
-      "options": [
-        "New releases & restocks",
-        "Price alerts only",
-        "Community updates", 
-        "All notifications",
-        "No notifications"
-      ]
-    },
-    {
-      "id": "family_name",
+      "id": "lfly6jmk3",
       "pageType": "form",
-      "contentType": "input",
-      "title": "What should we call your collection family?",
-      "subtitle": "Give your Labubu family a special name!",
-      "placeholder": "e.g., The Bubu Squad",
-      "inputType": "text",
-      "key": "family_name"
-    },
-    {
-      "id": "completion",
-      "pageType": "completion",
-      "contentType": "text_image",
-      "title": "You're all set! 🎉",
-      "subtitle": "Let's start building your amazing Labubu collection together"
+      "contentType": "selector",
+      "title": "Set Gender",
+      "subtitle": "Select your interests and preferences",
+      "key": "user_choices",
+      "inputType": "selector",
+      "options": [
+        "Option 1",
+        "Option 2",
+        "Option 3"
+      ],
+      "overrides": {
+        "craftContent": "{\"ROOT\":{\"type\":\"div\",\"isCanvas\":true,\"props\":{\"style\":{\"position\":\"relative\",\"width\":\"100%\",\"height\":\"100%\",\"padding\":\"16px\",\"display\":\"flex\",\"flexDirection\":\"column\",\"gap\":\"16px\",\"minHeight\":\"100%\"}},\"displayName\":\"div\",\"custom\":{\"displayName\":\"Canvas\"},\"hidden\":false,\"nodes\":[\"JeljABtJWh\",\"IQwR5rOEKm\",\"wpQo3cVnfl\",\"xFQnmO60uq\"],\"linkedNodes\":{}},\"JeljABtJWh\":{\"type\":{\"resolvedName\":\"HeaderText\"},\"isCanvas\":false,\"props\":{\"text\":\"Set your gender\",\"fontSize\":28,\"color\":\"#1D1D1F\",\"alignment\":\"center\",\"padding\":{\"top\":8,\"right\":16,\"bottom\":8,\"left\":16},\"margin\":{\"top\":0,\"right\":0,\"bottom\":0,\"left\":0}},\"displayName\":\"Header Text\",\"custom\":{},\"parent\":\"ROOT\",\"hidden\":false,\"nodes\":[],\"linkedNodes\":{}},\"IQwR5rOEKm\":{\"type\":{\"resolvedName\":\"BodyText\"},\"isCanvas\":false,\"props\":{\"text\":\"Select your interests and preferences\",\"fontSize\":17,\"color\":\"#1D1D1F\",\"alignment\":\"center\",\"padding\":{\"top\":4,\"right\":16,\"bottom\":4,\"left\":16},\"margin\":{\"top\":0,\"right\":0,\"bottom\":0,\"left\":0}},\"displayName\":\"Body Text\",\"custom\":{},\"parent\":\"ROOT\",\"hidden\":false,\"nodes\":[],\"linkedNodes\":{}},\"wpQo3cVnfl\":{\"type\":{\"resolvedName\":\"SelectorComponent\"},\"isCanvas\":false,\"props\":{\"options\":[\"Option 1\",\"Option 2\",\"Option 3\",\"New Option\"],\"multiSelect\":false,\"backgroundColor\":\"#FFFFFF\",\"textColor\":\"#374151\",\"borderColor\":\"#E5E7EB\"},\"displayName\":\"Selector\",\"custom\":{},\"parent\":\"ROOT\",\"hidden\":false,\"nodes\":[],\"linkedNodes\":{}},\"xFQnmO60uq\":{\"type\":{\"resolvedName\":\"ButtonComponent\"},\"isCanvas\":false,\"props\":{\"text\":\"Register\",\"backgroundColor\":\"#007AFF\",\"textColor\":\"#FFFFFF\"},\"displayName\":\"Button\",\"custom\":{},\"parent\":\"ROOT\",\"hidden\":false,\"nodes\":[],\"linkedNodes\":{}}}"
+      }
     }
   ]
 }
