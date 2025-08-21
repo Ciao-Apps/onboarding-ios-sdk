@@ -91,46 +91,53 @@ struct CraftNodeRenderer: View {
     private func renderNode(_ node: CraftNode) -> some View {
         let componentType = node.type.resolvedName ?? node.type.name ?? "unknown"
         
-        switch componentType {
-        case "HeaderText":
-            HeaderTextComponent(node: node, viewModel: viewModel)
-            
-        case "BodyText":
-            BodyTextComponent(node: node, viewModel: viewModel)
-            
-        case "ImageComponent":
-            ImageComponent(node: node, viewModel: viewModel)
-            
-        case "ButtonComponent":
-            ButtonComponent(node: node, page: page, viewModel: viewModel)
-            
-        case "Stack":
-            StackComponent(node: node, nodeData: nodeData, page: page, viewModel: viewModel)
-            
-        case "SelectorComponent":
-            SelectorComponent(node: node, page: page, viewModel: viewModel)
-            
-        case "InputFieldComponent":
-            InputFieldComponent(node: node, page: page, viewModel: viewModel)
-            
-        case "SliderComponent":
-            SliderComponent(node: node, page: page, viewModel: viewModel)
-            
-        case "SpacerComponent":
-            SpacerComponent(node: node)
-            
-        default:
-            // Render container with children if it has any
-            if !node.childNodes.isEmpty {
-                VStack(spacing: viewModel.mediumSpacing) {
-                    ForEach(node.childNodes, id: \.self) { childId in
-                        if let childNode = nodeData[childId] {
-                            renderNode(childNode)
+        Group {
+            switch componentType {
+            case "HeaderText":
+                HeaderTextComponent(node: node, viewModel: viewModel)
+                
+            case "BodyText":
+                BodyTextComponent(node: node, viewModel: viewModel)
+                
+            case "ImageComponent":
+                ImageComponent(node: node, viewModel: viewModel)
+                
+            case "ButtonComponent":
+                ButtonComponent(node: node, page: page, viewModel: viewModel)
+                
+            case "Stack":
+                StackComponent(node: node, nodeData: nodeData, page: page, viewModel: viewModel)
+                
+            case "SelectorComponent":
+                SelectorComponent(node: node, page: page, viewModel: viewModel)
+                
+            case "InputFieldComponent":
+                InputFieldComponent(node: node, page: page, viewModel: viewModel)
+                
+            case "SliderComponent":
+                SliderComponent(node: node, page: page, viewModel: viewModel)
+                
+            case "SpacerComponent":
+                SpacerComponent(node: node)
+                
+            default:
+                // Render container with children if it has any
+                if !node.childNodes.isEmpty {
+                    VStack(spacing: CGFloat(viewModel.mediumSpacing)) {
+                        ForEach(node.childNodes, id: \.self) { childId in
+                            if let childNode = nodeData[childId] {
+                                CraftNodeRenderer(
+                                    nodeData: nodeData,
+                                    rootNodeId: childId,
+                                    page: page,
+                                    viewModel: viewModel
+                                )
+                            }
                         }
                     }
+                } else {
+                    EmptyView()
                 }
-            } else {
-                EmptyView()
             }
         }
     }
@@ -198,7 +205,7 @@ struct HeaderTextComponent: View {
     
     private var textColor: Color {
         if let colorString = node.props["color"] as? String {
-            return Color(hex: colorString) ?? viewModel.templateTextColor
+            return Color(craftHex: colorString) ?? viewModel.templateTextColor
         }
         return viewModel.templateTextColor
     }
@@ -247,7 +254,7 @@ struct BodyTextComponent: View {
     
     private var textColor: Color {
         if let colorString = node.props["color"] as? String {
-            return Color(hex: colorString) ?? viewModel.templateTextColor
+            return Color(craftHex: colorString) ?? viewModel.templateTextColor
         }
         return viewModel.templateTextColor
     }
@@ -326,7 +333,13 @@ struct ButtonComponent: View {
     
     var body: some View {
         Button(action: {
-            viewModel.nextPage()
+            // Move to next page
+            if viewModel.canGoForward {
+                viewModel.currentPageIndex += 1
+            } else if viewModel.isLastPage {
+                // Complete onboarding
+                viewModel.completeOnboarding()
+            }
         }) {
             Text(text)
                 .font(.system(size: fontSize, weight: .semibold))
@@ -382,14 +395,14 @@ struct ButtonComponent: View {
     
     private var backgroundColor: Color {
         if let colorString = node.props["backgroundColor"] as? String {
-            return Color(hex: colorString) ?? viewModel.templatePrimaryColor
+            return Color(craftHex: colorString) ?? viewModel.templatePrimaryColor
         }
         return viewModel.templatePrimaryColor
     }
     
     private var textColor: Color {
         if let colorString = node.props["textColor"] as? String {
-            return Color(hex: colorString) ?? Color.white
+            return Color(craftHex: colorString) ?? Color.white
         }
         return Color.white
     }
@@ -422,7 +435,7 @@ struct StackComponent: View {
                         }
                     }
                 }
-                .frame(maxWidth: .infinity, alignment: horizontalAlignment)
+                .frame(maxWidth: .infinity, alignment: Alignment(horizontal: horizontalAlignment, vertical: .center))
                 .padding(stackPadding)
             } else {
                 VStack(alignment: horizontalAlignment, spacing: spacing) {
@@ -535,35 +548,35 @@ struct SelectorComponent: View {
     
     private var backgroundColor: Color {
         if let colorString = node.props["backgroundColor"] as? String {
-            return Color(hex: colorString) ?? Color.gray.opacity(0.1)
+            return Color(craftHex: colorString) ?? Color.gray.opacity(0.1)
         }
         return Color.gray.opacity(0.1)
     }
     
     private var selectedBackgroundColor: Color {
         if let colorString = node.props["selectedBackgroundColor"] as? String {
-            return Color(hex: colorString) ?? viewModel.templatePrimaryColor
+            return Color(craftHex: colorString) ?? viewModel.templatePrimaryColor
         }
         return viewModel.templatePrimaryColor
     }
     
     private var textColor: Color {
         if let colorString = node.props["textColor"] as? String {
-            return Color(hex: colorString) ?? viewModel.templateTextColor
+            return Color(craftHex: colorString) ?? viewModel.templateTextColor
         }
         return viewModel.templateTextColor
     }
     
     private var selectedTextColor: Color {
         if let colorString = node.props["selectedTextColor"] as? String {
-            return Color(hex: colorString) ?? Color.white
+            return Color(craftHex: colorString) ?? Color.white
         }
         return Color.white
     }
     
     private var borderColor: Color {
         if let colorString = node.props["borderColor"] as? String {
-            return Color(hex: colorString) ?? Color.gray.opacity(0.3)
+            return Color(craftHex: colorString) ?? Color.gray.opacity(0.3)
         }
         return Color.gray.opacity(0.3)
     }
@@ -663,7 +676,7 @@ struct SliderComponent: View {
     
     private var thumbColor: Color {
         if let colorString = node.props["thumbColor"] as? String {
-            return Color(hex: colorString) ?? viewModel.templatePrimaryColor
+            return Color(craftHex: colorString) ?? viewModel.templatePrimaryColor
         }
         return viewModel.templatePrimaryColor
     }
@@ -683,11 +696,11 @@ struct SpacerComponent: View {
     }
 }
 
-// MARK: - Color Extension
+// MARK: - Color Utilities
 
-extension Color {
-    init?(hex: String) {
-        let hex = hex.trimmingCharacters(in: CharacterSet.alphanumerics.inverted)
+private extension Color {
+    init?(craftHex: String) {
+        let hex = craftHex.trimmingCharacters(in: CharacterSet.alphanumerics.inverted)
         var int: UInt64 = 0
         Scanner(string: hex).scanHexInt64(&int)
         let a, r, g, b: UInt64
