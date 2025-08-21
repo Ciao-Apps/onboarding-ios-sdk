@@ -286,6 +286,7 @@ public enum InputType: String, Codable {
     case number = "number"
     case email = "email"
     case password = "password"
+    case selector = "selector"
 }
 
 // MARK: - Color Extension for Hex Support

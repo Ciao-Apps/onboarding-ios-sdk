@@ -109,6 +109,49 @@ public class EnhancedOnboardingViewModel: ObservableObject {
         CGFloat(template.cornerRadius ?? 12)
     }
     
+    // MARK: - Background Image Support
+    
+    public var currentPageBackgroundImage: String? {
+        return currentPage?.overrides?.backgroundImage
+    }
+    
+    public var currentPageBackgroundSize: String {
+        return currentPage?.overrides?.backgroundSize ?? "cover"
+    }
+    
+    public var currentPageBackgroundPosition: String {
+        return currentPage?.overrides?.backgroundPosition ?? "center"
+    }
+    
+    public func backgroundAlignment(for geometry: GeometryProxy) -> Alignment {
+        let position = currentPageBackgroundPosition
+        switch position {
+        case "top": return .top
+        case "bottom": return .bottom
+        case "left": return .leading
+        case "right": return .trailing
+        case "top left": return .topLeading
+        case "top right": return .topTrailing
+        case "bottom left": return .bottomLeading
+        case "bottom right": return .bottomTrailing
+        default: return .center // "center" and fallback
+        }
+    }
+    
+    public func backgroundOffset(for geometry: GeometryProxy) -> CGSize {
+        let position = currentPageBackgroundPosition
+        let safeAreaInsets = geometry.safeAreaInsets
+        
+        switch position {
+        case "top":
+            return CGSize(width: 0, height: safeAreaInsets.top / 2)
+        case "bottom":
+            return CGSize(width: 0, height: -safeAreaInsets.bottom / 2)
+        default:
+            return .zero
+        }
+    }
+    
     // MARK: - Spacing
     
     public var smallSpacing: CGFloat {
