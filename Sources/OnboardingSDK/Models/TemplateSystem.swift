@@ -393,19 +393,31 @@ public struct PageOverrides: Codable {
     public let primaryColor: String?
     public let spacing: Double?
     public let buttonColor: String?
+    public let backgroundImage: String?  // New: Support for background images
+    public let backgroundSize: String?   // New: Background sizing (cover, contain, etc.)
+    public let backgroundPosition: String? // New: Background positioning
+    public let craftContent: String?     // New: Serialized Craft.js content for advanced layouts
     
     public init(
         backgroundColor: String? = nil,
         textColor: String? = nil,
         primaryColor: String? = nil,
         spacing: Double? = nil,
-        buttonColor: String? = nil
+        buttonColor: String? = nil,
+        backgroundImage: String? = nil,
+        backgroundSize: String? = nil,
+        backgroundPosition: String? = nil,
+        craftContent: String? = nil
     ) {
         self.backgroundColor = backgroundColor
         self.textColor = textColor
         self.primaryColor = primaryColor
         self.spacing = spacing
         self.buttonColor = buttonColor
+        self.backgroundImage = backgroundImage
+        self.backgroundSize = backgroundSize
+        self.backgroundPosition = backgroundPosition
+        self.craftContent = craftContent
     }
 }
 

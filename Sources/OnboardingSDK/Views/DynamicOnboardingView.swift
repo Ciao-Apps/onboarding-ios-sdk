@@ -111,22 +111,39 @@ struct PageView: View {
     var body: some View {
         ScrollView {
             VStack(spacing: viewModel.largeSpacing) {
-                // Page content based on type
-                switch page.pageType {
-                case .hero:
-                    HeroContent(page: page, viewModel: viewModel)
-                case .content:
-                    ContentPageContent(page: page, viewModel: viewModel)
-                case .form:
-                    FormContent(page: page, viewModel: viewModel)
-                case .feature:
-                    FeatureContent(page: page, viewModel: viewModel)
-                case .completion:
-                    CompletionContent(page: page, viewModel: viewModel)
+                // Check if Craft.js content exists and render it
+                if let craftContent = page.overrides?.craftContent, !craftContent.isEmpty {
+                    CraftContentRenderer(craftContent: craftContent, page: page, viewModel: viewModel)
+                } else {
+                    // Fallback to standard page rendering
+                    StandardPageContent(page: page, viewModel: viewModel)
                 }
             }
             .padding(.horizontal, viewModel.mediumSpacing)
             .padding(.top, viewModel.largeSpacing)
+        }
+    }
+}
+
+/// Standard page content renderer (current implementation)
+@available(iOS 15.0, *)
+struct StandardPageContent: View {
+    let page: EnhancedOnboardingPage
+    @ObservedObject var viewModel: EnhancedOnboardingViewModel
+    
+    var body: some View {
+        // Page content based on type
+        switch page.pageType {
+        case .hero:
+            HeroContent(page: page, viewModel: viewModel)
+        case .content:
+            ContentPageContent(page: page, viewModel: viewModel)
+        case .form:
+            FormContent(page: page, viewModel: viewModel)
+        case .feature:
+            FeatureContent(page: page, viewModel: viewModel)
+        case .completion:
+            CompletionContent(page: page, viewModel: viewModel)
         }
     }
 }
