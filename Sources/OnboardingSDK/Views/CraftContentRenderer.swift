@@ -181,6 +181,9 @@ struct CraftNodeRenderer: View {
             case "ButtonComponent":
                 ButtonComponent(node: node, page: page, viewModel: viewModel)
                 
+            case "NavigationButton":
+                NavigationButtonComponent(node: node, page: page, viewModel: viewModel)
+                
             case "Stack":
                 StackComponent(node: node, nodeData: nodeData, page: page, viewModel: viewModel)
                 
@@ -485,6 +488,181 @@ struct ButtonComponent: View {
     
     private var cornerRadius: CGFloat {
         CGFloat(node.props["borderRadius"] as? Double ?? Double(viewModel.templateCornerRadius))
+    }
+}
+
+@available(iOS 15.0, *)
+struct NavigationButtonComponent: View {
+    let node: CraftNode
+    let page: EnhancedOnboardingPage
+    @ObservedObject var viewModel: EnhancedOnboardingViewModel
+    
+    var body: some View {
+        Button(action: {
+            handleNavigationAction()
+        }) {
+            HStack(spacing: 8) {
+                // Back icon on left for back action
+                if action == "back" && !iconName.isEmpty {
+                    Text(iconSymbol)
+                        .font(.system(size: fontSize * 1.2, weight: .medium))
+                        .foregroundColor(textColor)
+                }
+                
+                // Button text
+                if !text.isEmpty {
+                    Text(text)
+                        .font(.system(size: fontSize, weight: .semibold))
+                        .foregroundColor(textColor)
+                }
+                
+                // Forward icon on right for next/finish actions
+                if (action == "next" || action == "finish") && !iconName.isEmpty {
+                    Text(iconSymbol)
+                        .font(.system(size: fontSize * 1.2, weight: .medium))
+                        .foregroundColor(textColor)
+                }
+            }
+            .padding(.horizontal, horizontalPadding)
+            .padding(.vertical, verticalPadding)
+            .frame(maxWidth: frameMaxWidth)
+            .frame(minHeight: minHeight)
+            .background(backgroundColor)
+            .cornerRadius(cornerRadius)
+            .overlay(
+                // Border for secondary type
+                buttonType == "secondary" ? 
+                RoundedRectangle(cornerRadius: cornerRadius)
+                    .stroke(viewModel.templatePrimaryColor, lineWidth: 2)
+                : nil
+            )
+        }
+        .padding(buttonPadding)
+    }
+    
+    private func handleNavigationAction() {
+        switch action {
+        case "back":
+            if viewModel.canGoBack {
+                viewModel.goBack()
+            }
+        case "next":
+            if viewModel.canGoForward {
+                viewModel.goForward()
+            }
+        case "finish":
+            if viewModel.isLastPage {
+                viewModel.finishOnboarding()
+            }
+        default:
+            break
+        }
+    }
+    
+    private var text: String {
+        node.props["text"] as? String ?? "Continue"
+    }
+    
+    private var buttonType: String {
+        node.props["type"] as? String ?? "primary"
+    }
+    
+    private var action: String {
+        node.props["action"] as? String ?? "next"
+    }
+    
+    private var iconName: String {
+        node.props["icon"] as? String ?? ""
+    }
+    
+    private var iconSymbol: String {
+        let iconMap: [String: String] = [
+            "chevron.left": "‹",
+            "chevron.right": "›", 
+            "arrow.left": "←",
+            "arrow.right": "→",
+            "checkmark": "✓",
+            "xmark": "✕"
+        ]
+        return iconMap[iconName] ?? iconName
+    }
+    
+    private var backgroundColor: Color {
+        switch buttonType {
+        case "primary":
+            if let colorString = node.props["backgroundColor"] as? String {
+                return Color(hex: colorString) ?? viewModel.templatePrimaryColor
+            }
+            return viewModel.templatePrimaryColor
+        case "secondary":
+            return Color.clear
+        case "text":
+            return Color.clear
+        default:
+            return viewModel.templatePrimaryColor
+        }
+    }
+    
+    private var textColor: Color {
+        switch buttonType {
+        case "primary":
+            if let colorString = node.props["textColor"] as? String {
+                return Color(hex: colorString) ?? Color.white
+            }
+            return Color.white
+        case "secondary", "text":
+            if let colorString = node.props["backgroundColor"] as? String {
+                return Color(hex: colorString) ?? viewModel.templatePrimaryColor
+            }
+            return viewModel.templatePrimaryColor
+        default:
+            return Color.white
+        }
+    }
+    
+    private var fontSize: CGFloat {
+        CGFloat(node.props["fontSize"] as? Double ?? 17)
+    }
+    
+    private var cornerRadius: CGFloat {
+        CGFloat(node.props["borderRadius"] as? Double ?? Double(viewModel.templateCornerRadius))
+    }
+    
+    private var horizontalPadding: CGFloat {
+        if let paddingDict = node.props["padding"] as? [String: Any] {
+            return CGFloat(paddingDict["left"] as? Double ?? 24)
+        }
+        return 24
+    }
+    
+    private var verticalPadding: CGFloat {
+        if let paddingDict = node.props["padding"] as? [String: Any] {
+            return CGFloat(paddingDict["top"] as? Double ?? 16)
+        }
+        return 16
+    }
+    
+    private var minHeight: CGFloat {
+        CGFloat(44) // iOS standard button height
+    }
+    
+    private var frameMaxWidth: CGFloat? {
+        if let widthString = node.props["width"] as? String {
+            return widthString == "100%" ? .infinity : nil
+        }
+        return .infinity
+    }
+    
+    private var buttonPadding: EdgeInsets {
+        if let marginDict = node.props["margin"] as? [String: Any] {
+            return EdgeInsets(
+                top: CGFloat(marginDict["top"] as? Double ?? 0),
+                leading: CGFloat(marginDict["left"] as? Double ?? 0),
+                bottom: CGFloat(marginDict["bottom"] as? Double ?? 0),
+                trailing: CGFloat(marginDict["right"] as? Double ?? 0)
+            )
+        }
+        return EdgeInsets()
     }
 }
 
