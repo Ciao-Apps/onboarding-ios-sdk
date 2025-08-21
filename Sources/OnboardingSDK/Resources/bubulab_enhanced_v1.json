@@ -3,14 +3,13 @@
   "appID": "bubulab_enhanced_v1",
   "version": "1.0",
   "globalTemplate": {
-    "templateID": "modern",
-    "name": "Modern",
+    "templateID": "basic",
+    "name": "Basic",
     "primaryColor": "#007AFF",
     "secondaryColor": "#5856D6",
     "backgroundColor": "#F2F2F7",
     "textColor": "#000000",
     "cornerRadius": 26,
-    "navigationStyle": "modern",
     "buttonStyle": {
       "primaryBackgroundColor": "#007AFF",
       "primaryTextColor": "#FFFFFF",

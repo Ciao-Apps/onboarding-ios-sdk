@@ -101,7 +101,7 @@ public class OnboardingSDK: ObservableObject {
             flowID: flowID,
             appID: appID ?? "fallback_app",
             version: "1.0-fallback",
-            globalTemplate: PredefinedTemplates.modern,
+            globalTemplate: DefaultTemplate.basic,
             pages: [
                 EnhancedOnboardingPage(
                     id: "fallback_error",
@@ -225,14 +225,15 @@ public class OnboardingSDK: ObservableObject {
     
     // MARK: - Template Management
     
-    /// Get all available predefined templates
+    /// Get all available templates
     public func getAvailableTemplates() -> [GlobalTemplate] {
-        return PredefinedTemplates.allTemplates
+        return [DefaultTemplate.basic]
     }
     
     /// Get specific template by ID
     public func getTemplate(templateID: String) -> GlobalTemplate? {
-        return PredefinedTemplates.allTemplates.first { $0.templateID == templateID }
+        // Always return basic template since we only have one now
+        return DefaultTemplate.basic
     }
     
     /// Preview how a flow would look with different templates
